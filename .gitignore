@@ -1,0 +1,10 @@
+# Maven
+target/
+# Maven release/plugin generated files
+pom.xml.tag pom.xml.releaseBackup pom.xml.versionsBackup pom.xml.next release.properties dependency-reduced-pom.xml buildNumber.properties 
+.mvn/timing.properties
+# NetBeans
+/nbproject/private/ /nbbuild/ /dist/ /nbdist/ /.nb-gradle/ build/
+!nbproject/build-impl.xml
+# Compiled files
+*.class
