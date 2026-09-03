@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univates.moviebox.models.CombosDAO;
+package br.univates.moviebox.models.DAO;
 
 
 import java.sql.ResultSet;
