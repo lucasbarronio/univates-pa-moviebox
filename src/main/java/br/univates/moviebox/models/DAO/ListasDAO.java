@@ -29,7 +29,9 @@ public class ListasDAO implements DAO_I<Lista> {
 
     @Override
     public void editar(Lista l) throws Exception {
-        String sql = "UPDATE lista SET";
+        String sql = "UPDATE lista SET nome = '" + l.getNome()
+                + "', descricao = '" + l.getDescricao()
+                + "' WHERE id = " + l.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }

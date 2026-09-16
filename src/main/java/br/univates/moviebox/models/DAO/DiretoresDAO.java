@@ -29,7 +29,9 @@ public class DiretoresDAO implements DAO_I<Diretor> {
 
     @Override
     public void editar(Diretor d) throws Exception {
-        String sql = "UPDATE filme SET";
+        String sql = "UPDATE diretor SET nome = '" + d.getNome()
+                + "', nacionalidade = '" + d.getNacionalidade()
+                + "' WHERE id = " + d.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }

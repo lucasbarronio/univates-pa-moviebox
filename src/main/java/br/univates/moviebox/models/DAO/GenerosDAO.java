@@ -28,7 +28,8 @@ public class GenerosDAO implements DAO_I<Genero> {
 
     @Override
     public void editar(Genero g) throws Exception {
-        String sql = "UPDATE genero SET";
+        String sql = "UPDATE genero SET nome = '" + g.getNome()
+                + "' WHERE id = " + g.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }

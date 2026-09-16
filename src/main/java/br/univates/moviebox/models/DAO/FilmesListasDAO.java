@@ -31,7 +31,10 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     @Override
     public void editar(FilmeLista l) throws Exception {
-        String sql = "UPDATE filme_lista SET";
+        String sql = "UPDATE filme_lista SET id_filme = " + l.getFilme().getId()
+                + ", id_lista = " + l.getLista().getId()
+                + " WHERE id_filme = " + l.getFilme().getId()
+                + " AND id_lista = " + l.getLista().getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }

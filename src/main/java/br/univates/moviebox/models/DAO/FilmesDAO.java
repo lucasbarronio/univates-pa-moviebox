@@ -34,7 +34,12 @@ public class FilmesDAO implements DAO_I<Filme> {
 
     @Override
     public void editar(Filme f) throws Exception {
-        String sql = "UPDATE filme SET";
+        String sql = "UPDATE filme SET titulo = '" + f.getTitulo()
+                + "', ano_lancamento = '" + f.getAno_lancamento()
+                + "', sinopse = '" + f.getSinopse()
+                + "', id_diretor = '" + f.getDiretor().getId()
+                + "', id_genero = '" + f.getGenero().getId()
+                + "' WHERE id = " + f.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
