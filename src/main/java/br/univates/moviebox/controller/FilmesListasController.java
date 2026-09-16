@@ -4,10 +4,13 @@
  */
 package br.univates.moviebox.controller;
 
+import br.univates.moviebox.exceptions.PersistenciaException;
 import br.univates.moviebox.models.FilmeLista;
 import java.util.ArrayList;
 import br.univates.moviebox.models.DAO.FilmesListasDAO;
 import br.univates.moviebox.utils.FILMESLISTASCONTROLLER_I;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +18,8 @@ import br.univates.moviebox.utils.FILMESLISTASCONTROLLER_I;
  */
 public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLista> {
 
+    private static final Logger LOGGER = Logger.getLogger(FilmesListasController.class.getName());
     private FilmesListasDAO filmesListasDAO = new FilmesListasDAO();
-
 
     @Override
     public boolean salvar(FilmeLista o) {
@@ -24,8 +27,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
             filmesListasDAO.salvar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao salvar relação filme id=" + o.getFilme().getId() + ", lista id=" + o.getLista().getId(), ex);
+            throw new PersistenciaException("Não foi possível salvar a relação filme e lista", ex);
         }
     }
 
@@ -35,8 +38,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
             filmesListasDAO.editar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao editar relação filme id=" + o.getFilme().getId() + ", lista id=" + o.getLista().getId(), ex);
+            throw new PersistenciaException("Não foi possível editar a relação filme e lista", ex);
         }
 
     }
@@ -47,8 +50,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
             filmesListasDAO.excluir(codigoFilme, codigoLista);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao excluir relação filme id=" + codigoFilme + ", lista id=" + codigoLista, ex);
+            throw new PersistenciaException("Não foi possível excluir a relação filme e lista", ex);
         }
     }
 
@@ -57,8 +60,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperaPorFilme(codigo);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas do filme id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível recuperar as listas do filme", ex);
         }
     }
 
@@ -67,8 +70,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperaPorLista(codigo);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes da lista id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível recuperar os filmes da lista", ex);
         }
     }
 
@@ -77,10 +80,9 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperarTodos();
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar relação de filmes e listas", ex);
+            throw new PersistenciaException("Não foi possível recuperar relação de filmes e listas", ex);
         }
     }
-
 
 }

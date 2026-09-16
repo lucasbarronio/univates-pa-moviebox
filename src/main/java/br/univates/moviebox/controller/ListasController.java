@@ -4,10 +4,13 @@
  */
 package br.univates.moviebox.controller;
 
+import br.univates.moviebox.exceptions.PersistenciaException;
 import br.univates.moviebox.models.Lista;
 import java.util.ArrayList;
 import br.univates.moviebox.models.DAO.ListasDAO;
 import br.univates.moviebox.utils.CONTROLLER_I;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +18,8 @@ import br.univates.moviebox.utils.CONTROLLER_I;
  */
 public class ListasController implements CONTROLLER_I<Lista> {
 
+    private static final Logger LOGGER = Logger.getLogger(ListasController.class.getName());
     private ListasDAO listasDAO = new ListasDAO();
-
 
     @Override
     public boolean salvar(Lista o) {
@@ -24,8 +27,8 @@ public class ListasController implements CONTROLLER_I<Lista> {
             listasDAO.salvar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao salvar lista id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível salvar a lista", ex);
         }
     }
 
@@ -35,8 +38,8 @@ public class ListasController implements CONTROLLER_I<Lista> {
             listasDAO.editar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao editar lista id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível editar a lista", ex);
         }
 
     }
@@ -47,8 +50,8 @@ public class ListasController implements CONTROLLER_I<Lista> {
             listasDAO.excluir(codigo);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao excluir lista id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível excluir a lista", ex);
         }
     }
 
@@ -57,8 +60,8 @@ public class ListasController implements CONTROLLER_I<Lista> {
         try {
             return listasDAO.recuperaUm(codigo);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar lista id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível recuperar a lista", ex);
         }
     }
 
@@ -67,10 +70,9 @@ public class ListasController implements CONTROLLER_I<Lista> {
         try {
             return listasDAO.recuperarTodos(criterio);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas", ex);
+            throw new PersistenciaException("Não foi possível recuperar as listas", ex);
         }
     }
-
 
 }

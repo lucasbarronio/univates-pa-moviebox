@@ -4,10 +4,13 @@
  */
 package br.univates.moviebox.controller;
 
+import br.univates.moviebox.exceptions.PersistenciaException;
 import br.univates.moviebox.models.Genero;
 import java.util.ArrayList;
 import br.univates.moviebox.models.DAO.GenerosDAO;
 import br.univates.moviebox.utils.CONTROLLER_I;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +18,8 @@ import br.univates.moviebox.utils.CONTROLLER_I;
  */
 public class GenerosController implements CONTROLLER_I<Genero> {
 
+    private static final Logger LOGGER = Logger.getLogger(GenerosController.class.getName());
     private GenerosDAO generosDAO = new GenerosDAO();
-
 
     @Override
     public boolean salvar(Genero o) {
@@ -24,8 +27,8 @@ public class GenerosController implements CONTROLLER_I<Genero> {
             generosDAO.salvar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao salvar gênero id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível salvar o gênero", ex);
         }
     }
 
@@ -35,8 +38,8 @@ public class GenerosController implements CONTROLLER_I<Genero> {
             generosDAO.editar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao editar gênero id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível editar o gênero", ex);
         }
 
     }
@@ -47,8 +50,8 @@ public class GenerosController implements CONTROLLER_I<Genero> {
             generosDAO.excluir(codigo);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao excluir gênero id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível excluir o gênero", ex);
         }
     }
 
@@ -57,8 +60,8 @@ public class GenerosController implements CONTROLLER_I<Genero> {
         try {
             return generosDAO.recuperaUm(codigo);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar gênero id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível recuperar o gênero", ex);
         }
     }
 
@@ -67,10 +70,9 @@ public class GenerosController implements CONTROLLER_I<Genero> {
         try {
             return generosDAO.recuperarTodos(criterio);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar gêneros", ex);
+            throw new PersistenciaException("Não foi possível recuperar os gêneros", ex);
         }
     }
-
 
 }

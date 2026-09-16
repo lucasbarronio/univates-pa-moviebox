@@ -4,10 +4,13 @@
  */
 package br.univates.moviebox.controller;
 
+import br.univates.moviebox.exceptions.PersistenciaException;
 import br.univates.moviebox.models.Filme;
 import java.util.ArrayList;
 import br.univates.moviebox.models.DAO.FilmesDAO;
 import br.univates.moviebox.utils.CONTROLLER_I;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +18,8 @@ import br.univates.moviebox.utils.CONTROLLER_I;
  */
 public class FilmesController implements CONTROLLER_I<Filme> {
 
+    private static final Logger LOGGER = Logger.getLogger(FilmesController.class.getName());
     private FilmesDAO filmesDAO = new FilmesDAO();
-
 
     @Override
     public boolean salvar(Filme o) {
@@ -24,8 +27,8 @@ public class FilmesController implements CONTROLLER_I<Filme> {
             filmesDAO.salvar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao salvar filme id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível salvar o filme", ex);
         }
     }
 
@@ -35,8 +38,8 @@ public class FilmesController implements CONTROLLER_I<Filme> {
             filmesDAO.editar(o);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao editar filme id=" + o.getId(), ex);
+            throw new PersistenciaException("Não foi possível editar o filme", ex);
         }
 
     }
@@ -47,8 +50,8 @@ public class FilmesController implements CONTROLLER_I<Filme> {
             filmesDAO.excluir(codigo);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return false;
+            LOGGER.log(Level.SEVERE, "Falha ao excluir filme id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível excluir o filme", ex);
         }
     }
 
@@ -57,8 +60,8 @@ public class FilmesController implements CONTROLLER_I<Filme> {
         try {
             return filmesDAO.recuperaUm(codigo);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filme id=" + codigo, ex);
+            throw new PersistenciaException("Não foi possível recuperar o filme", ex);
         }
     }
 
@@ -67,10 +70,9 @@ public class FilmesController implements CONTROLLER_I<Filme> {
         try {
             return filmesDAO.recuperarTodos(criterio);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            return null;
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes", ex);
+            throw new PersistenciaException("Não foi possível recuperar os filmes", ex);
         }
     }
-
 
 }
