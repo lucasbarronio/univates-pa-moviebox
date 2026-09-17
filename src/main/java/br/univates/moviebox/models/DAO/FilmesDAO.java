@@ -19,75 +19,75 @@ import br.univates.moviebox.utils.DAO_I;
 public class FilmesDAO implements DAO_I<Filme> {
 
     @Override
-    public void salvar(Filme f) throws Exception {
+    public void salvar(Filme filme) throws Exception {
         String sql = "INSERT INTO filme "
                 + "(titulo, ano_lancamento, sinopse, id_diretor, id_genero) "
                 + "VALUES "
-                + "('" + f.getTitulo()+ "', "
-                + "'" + f.getAno_lancamento()+ "', "
-                + "'" + f.getSinopse()+ "', "
-                + "'" + f.getDiretor().getId()+ "', "
-                + "'" + f.getGenero().getId()+ "')";
+                + "('" + filme.getTitulo() + "', "
+                + "'" + filme.getAno_lancamento() + "', "
+                + "'" + filme.getSinopse() + "', "
+                + "'" + filme.getDiretor().getId() + "', "
+                + "'" + filme.getGenero().getId() + "')";
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void editar(Filme f) throws Exception {
-        String sql = "UPDATE filme SET titulo = '" + f.getTitulo()
-                + "', ano_lancamento = '" + f.getAno_lancamento()
-                + "', sinopse = '" + f.getSinopse()
-                + "', id_diretor = '" + f.getDiretor().getId()
-                + "', id_genero = '" + f.getGenero().getId()
-                + "' WHERE id = " + f.getId();
+    public void editar(Filme filme) throws Exception {
+        String sql = "UPDATE filme SET titulo = '" + filme.getTitulo()
+                + "', ano_lancamento = '" + filme.getAno_lancamento()
+                + "', sinopse = '" + filme.getSinopse()
+                + "', id_diretor = '" + filme.getDiretor().getId()
+                + "', id_genero = '" + filme.getGenero().getId()
+                + "' WHERE id = " + filme.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        String sql = "DELETE FROM filme WHERE id = " + id;
+    public void excluir(int idFilme) throws Exception {
+        String sql = "DELETE FROM filme WHERE id = " + idFilme;
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public ArrayList<Filme> recuperarTodos(String criterio) throws Exception {
+    public ArrayList<Filme> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Filme> filmes = new ArrayList();
-        String sql = "SELECT * FROM filme WHERE titulo LIKE '%" + criterio + "%'";
+        String sql = "SELECT * FROM filme WHERE titulo LIKE '%" + termoBusca + "%'";
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            Filme f = new Filme();
-            f.setId(resultado.getInt("id"));
-            f.setTitulo(resultado.getString("titulo"));
-            f.setAno_lancamento(resultado.getInt("ano_lancamento"));
-            f.setSinopse(resultado.getString("sinopse"));
-            f.setDiretor(new Diretor(resultado.getInt("id_diretor")));
-            f.setGenero(new Genero(resultado.getInt("id_genero")));
-            filmes.add(f);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            Filme filme = new Filme();
+            filme.setId(resultadoConsulta.getInt("id"));
+            filme.setTitulo(resultadoConsulta.getString("titulo"));
+            filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
+            filme.setSinopse(resultadoConsulta.getString("sinopse"));
+            filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
+            filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
+            filmes.add(filme);
         }
 
         return filmes;
     }
 
     @Override
-    public Filme recuperaUm(int id) throws Exception {
-        Filme f = null;
-        String sql = "SELECT * FROM filme WHERE id = " + id;
+    public Filme recuperaUm(int idFilme) throws Exception {
+        Filme filme = null;
+        String sql = "SELECT * FROM filme WHERE id = " + idFilme;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        if (resultado.next()) {
-            f = new Filme();
-            f.setId(resultado.getInt("id"));
-            f.setTitulo(resultado.getString("titulo"));
-            f.setAno_lancamento(resultado.getInt("ano_lancamento"));
-            f.setSinopse(resultado.getString("sinopse"));
-            f.setDiretor(new Diretor(resultado.getInt("id_diretor")));
-            f.setGenero(new Genero(resultado.getInt("id_genero")));
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        if (resultadoConsulta.next()) {
+            filme = new Filme();
+            filme.setId(resultadoConsulta.getInt("id"));
+            filme.setTitulo(resultadoConsulta.getString("titulo"));
+            filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
+            filme.setSinopse(resultadoConsulta.getString("sinopse"));
+            filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
+            filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
         }
 
-        return f;
+        return filme;
     }
 
 }

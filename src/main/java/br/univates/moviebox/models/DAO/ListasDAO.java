@@ -17,63 +17,63 @@ import br.univates.moviebox.utils.DAO_I;
 public class ListasDAO implements DAO_I<Lista> {
 
     @Override
-    public void salvar(Lista l) throws Exception {
+    public void salvar(Lista lista) throws Exception {
         String sql = "INSERT INTO lista "
-            + "(nome, descricao) "
+                + "(nome, descricao) "
                 + "VALUES "
-                + "('" + l.getNome()+ "', "
-                + "'" + l.getDescricao()+ "')";
+                + "('" + lista.getNome() + "', "
+                + "'" + lista.getDescricao() + "')";
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void editar(Lista l) throws Exception {
-        String sql = "UPDATE lista SET nome = '" + l.getNome()
-                + "', descricao = '" + l.getDescricao()
-                + "' WHERE id = " + l.getId();
+    public void editar(Lista lista) throws Exception {
+        String sql = "UPDATE lista SET nome = '" + lista.getNome()
+                + "', descricao = '" + lista.getDescricao()
+                + "' WHERE id = " + lista.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        String sql = "DELETE FROM lista WHERE id = " + id;
+    public void excluir(int idLista) throws Exception {
+        String sql = "DELETE FROM lista WHERE id = " + idLista;
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public ArrayList<Lista> recuperarTodos(String criterio) throws Exception {
+    public ArrayList<Lista> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Lista> listas = new ArrayList();
-        String sql = "SELECT * FROM lista WHERE nome LIKE '%" + criterio + "%'";
+        String sql = "SELECT * FROM lista WHERE nome LIKE '%" + termoBusca + "%'";
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            Lista l = new Lista();
-            l.setId(resultado.getInt("id"));
-            l.setNome(resultado.getString("nome"));
-            l.setDescricao(resultado.getString("descricao"));
-            listas.add(l);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            Lista lista = new Lista();
+            lista.setId(resultadoConsulta.getInt("id"));
+            lista.setNome(resultadoConsulta.getString("nome"));
+            lista.setDescricao(resultadoConsulta.getString("descricao"));
+            listas.add(lista);
         }
 
         return listas;
     }
 
     @Override
-    public Lista recuperaUm(int id) throws Exception {
-        Lista l = null;
-        String sql = "SELECT * FROM lista WHERE id = " + id;
+    public Lista recuperaUm(int idLista) throws Exception {
+        Lista lista = null;
+        String sql = "SELECT * FROM lista WHERE id = " + idLista;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        if (resultado.next()) {
-            l = new Lista();
-            l.setId(resultado.getInt("id"));
-            l.setNome(resultado.getString("nome"));
-            l.setDescricao(resultado.getString("descricao"));            
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        if (resultadoConsulta.next()) {
+            lista = new Lista();
+            lista.setId(resultadoConsulta.getInt("id"));
+            lista.setNome(resultadoConsulta.getString("nome"));
+            lista.setDescricao(resultadoConsulta.getString("descricao"));
         }
 
-        return l;
+        return lista;
     }
 
 }

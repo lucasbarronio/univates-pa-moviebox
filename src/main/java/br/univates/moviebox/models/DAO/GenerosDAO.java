@@ -17,59 +17,59 @@ import br.univates.moviebox.utils.DAO_I;
 public class GenerosDAO implements DAO_I<Genero> {
 
     @Override
-    public void salvar(Genero g) throws Exception {
+    public void salvar(Genero genero) throws Exception {
         String sql = "INSERT INTO genero "
                 + "(nome) "
                 + "VALUES "
-                + "('" + g.getNome()+ "')";
+                + "('" + genero.getNome() + "')";
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void editar(Genero g) throws Exception {
-        String sql = "UPDATE genero SET nome = '" + g.getNome()
-                + "' WHERE id = " + g.getId();
+    public void editar(Genero genero) throws Exception {
+        String sql = "UPDATE genero SET nome = '" + genero.getNome()
+                + "' WHERE id = " + genero.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        String sql = "DELETE FROM genero WHERE id = " + id;
+    public void excluir(int idGenero) throws Exception {
+        String sql = "DELETE FROM genero WHERE id = " + idGenero;
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public ArrayList<Genero> recuperarTodos(String criterio) throws Exception {
+    public ArrayList<Genero> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Genero> generos = new ArrayList();
-        String sql = "SELECT * FROM genero WHERE nome LIKE '%" + criterio + "%'";
+        String sql = "SELECT * FROM genero WHERE nome LIKE '%" + termoBusca + "%'";
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            Genero g = new Genero();
-            g.setId(resultado.getInt("id"));
-            g.setNome(resultado.getString("nome"));
-            generos.add(g);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            Genero genero = new Genero();
+            genero.setId(resultadoConsulta.getInt("id"));
+            genero.setNome(resultadoConsulta.getString("nome"));
+            generos.add(genero);
         }
 
         return generos;
     }
 
     @Override
-    public Genero recuperaUm(int id) throws Exception {
-        Genero g = null;
-        String sql = "SELECT * FROM genero WHERE id = " + id;
+    public Genero recuperaUm(int idGenero) throws Exception {
+        Genero genero = null;
+        String sql = "SELECT * FROM genero WHERE id = " + idGenero;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        if (resultado.next()) {
-            g = new Genero();
-            g.setId(resultado.getInt("id"));
-            g.setNome(resultado.getString("nome"));
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        if (resultadoConsulta.next()) {
+            genero = new Genero();
+            genero.setId(resultadoConsulta.getInt("id"));
+            genero.setNome(resultadoConsulta.getString("nome"));
         }
 
-        return g;
+        return genero;
     }
 
 }

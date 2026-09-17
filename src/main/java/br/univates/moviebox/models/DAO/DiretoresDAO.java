@@ -17,63 +17,62 @@ import br.univates.moviebox.utils.DAO_I;
 public class DiretoresDAO implements DAO_I<Diretor> {
 
     @Override
-    public void salvar(Diretor d) throws Exception {
+    public void salvar(Diretor diretor) throws Exception {
         String sql = "INSERT INTO diretor "
                 + "(nome, nacionalidade) "
                 + "VALUES "
-                + "('" + d.getNome()+ "', "
-                + "'" + d.getNacionalidade()+ "')";
+                + "('" + diretor.getNome() + "', "
+                + "'" + diretor.getNacionalidade() + "')";
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void editar(Diretor d) throws Exception {
-        String sql = "UPDATE diretor SET nome = '" + d.getNome()
-                + "', nacionalidade = '" + d.getNacionalidade()
-                + "' WHERE id = " + d.getId();
+    public void editar(Diretor diretor) throws Exception {
+        String sql = "UPDATE diretor SET nome = '" + diretor.getNome()
+                + "', nacionalidade = '" + diretor.getNacionalidade()
+                + "' WHERE id = " + diretor.getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        String sql = "DELETE FROM diretor WHERE id = " + id;
+    public void excluir(int idDiretor) throws Exception {
+        String sql = "DELETE FROM diretor WHERE id = " + idDiretor;
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public ArrayList<Diretor> recuperarTodos(String criterio) throws Exception {
+    public ArrayList<Diretor> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Diretor> diretores = new ArrayList();
-        String sql = "SELECT * FROM diretor WHERE nome LIKE '%" + criterio + "%'";
+        String sql = "SELECT * FROM diretor WHERE nome LIKE '%" + termoBusca + "%'";
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            Diretor d = new Diretor();
-            d.setId(resultado.getInt("id"));
-            d.setNome(resultado.getString("nome"));
-            d.setNacionalidade(resultado.getString("nacionalidade"));
-            diretores.add(d);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            Diretor diretor = new Diretor();
+            diretor.setId(resultadoConsulta.getInt("id"));
+            diretor.setNome(resultadoConsulta.getString("nome"));
+            diretor.setNacionalidade(resultadoConsulta.getString("nacionalidade"));
+            diretores.add(diretor);
         }
 
         return diretores;
     }
 
     @Override
-    public Diretor recuperaUm(int id) throws Exception {
-        Diretor d = null;
-        String sql = "SELECT * FROM diretor WHERE id = " + id;
+    public Diretor recuperaUm(int idDiretor) throws Exception {
+        Diretor diretor = null;
+        String sql = "SELECT * FROM diretor WHERE id = " + idDiretor;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        if (resultado.next()) {
-            d = new Diretor();
-            d.setId(resultado.getInt("id"));
-            d.setNome(resultado.getString("nome"));
-            d.setNacionalidade(resultado.getString("nacionalidade"));
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        if (resultadoConsulta.next()) {
+            diretor = new Diretor();
+            diretor.setId(resultadoConsulta.getInt("id"));
+            diretor.setNome(resultadoConsulta.getString("nome"));
+            diretor.setNacionalidade(resultadoConsulta.getString("nacionalidade"));
         }
 
-        return d;
+        return diretor;
     }
-
 }

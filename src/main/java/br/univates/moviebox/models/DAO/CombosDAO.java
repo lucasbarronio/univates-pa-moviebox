@@ -4,7 +4,6 @@
  */
 package br.univates.moviebox.models.DAO;
 
-
 import java.sql.ResultSet;
 import javax.swing.JComboBox;
 import br.univates.moviebox.utils.ComboItem;
@@ -18,11 +17,11 @@ import br.univates.moviebox.utils.ConexaoBD;
  */
 public class CombosDAO {
 
-    ResultSet resultado = null;
+    ResultSet resultadoConsulta = null;
 
     // construtor 1
     public void popularCombo(String tabela, JComboBox combo) {
-        
+
         combo.removeAllItems();
 
         ComboItem item = new ComboItem();
@@ -31,13 +30,13 @@ public class CombosDAO {
         combo.addItem(item);
 
         try {
-            resultado = ConexaoBD.executeQuery("select * from " + tabela);
-            
-            if (resultado.isBeforeFirst()) {
-                while (resultado.next()) {
+            resultadoConsulta = ConexaoBD.executeQuery("select * from " + tabela);
+
+            if (resultadoConsulta.isBeforeFirst()) {
+                while (resultadoConsulta.next()) {
                     item = new ComboItem();
-                    item.setCodigo(resultado.getInt(1));
-                    item.setDescricao(resultado.getString(2));
+                    item.setCodigo(resultadoConsulta.getInt(1));
+                    item.setDescricao(resultadoConsulta.getString(2));
 
                     combo.addItem(item);
                 }
@@ -48,23 +47,23 @@ public class CombosDAO {
     }
 
     // construtor 2
-    public void popularCombo(String tabela, String campo1, String campo2, JComboBox combo, String complementoSQL) {
+    public void popularCombo(String tabela, String campoCodigo, String campoDescricao, JComboBox combo, String complementoSQL) {
 
         combo.removeAllItems();
-        
+
         ComboItem item = new ComboItem();
         item.setCodigo(0);
         item.setDescricao("Selecione");
         combo.addItem(item);
 
         try {
-            resultado = ConexaoBD.executeQuery("select * from " + tabela + " " + complementoSQL);
-            
-            if (resultado.isBeforeFirst()) {
-                while (resultado.next()) {
+            resultadoConsulta = ConexaoBD.executeQuery("select * from " + tabela + " " + complementoSQL);
+
+            if (resultadoConsulta.isBeforeFirst()) {
+                while (resultadoConsulta.next()) {
                     item = new ComboItem();
-                    item.setCodigo(resultado.getInt(campo1));
-                    item.setDescricao(resultado.getString(campo2));
+                    item.setCodigo(resultadoConsulta.getInt(campoCodigo));
+                    item.setDescricao(resultadoConsulta.getString(campoDescricao));
 
                     combo.addItem(item);
                 }
@@ -83,4 +82,3 @@ public class CombosDAO {
         }
     }
 }
-

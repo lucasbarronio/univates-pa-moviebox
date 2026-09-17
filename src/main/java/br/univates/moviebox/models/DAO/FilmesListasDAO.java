@@ -19,29 +19,29 @@ import br.univates.moviebox.utils.FILMESLISTAS_DAO;
 public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     @Override
-    public void salvar(FilmeLista fl) throws Exception {
+    public void salvar(FilmeLista filmeLista) throws Exception {
         String sql = "INSERT INTO filme_lista "
                 + "(id_filme, id_lista) "
                 + "VALUES "
-                + "('" + fl.getFilme().getId() + "', "
-                + "'" + fl.getLista().getId() + "')";
+                + "('" + filmeLista.getFilme().getId() + "', "
+                + "'" + filmeLista.getLista().getId() + "')";
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void editar(FilmeLista l) throws Exception {
-        String sql = "UPDATE filme_lista SET id_filme = " + l.getFilme().getId()
-                + ", id_lista = " + l.getLista().getId()
-                + " WHERE id_filme = " + l.getFilme().getId()
-                + " AND id_lista = " + l.getLista().getId();
+    public void editar(FilmeLista filmeLista) throws Exception {
+        String sql = "UPDATE filme_lista SET id_filme = " + filmeLista.getFilme().getId()
+                + ", id_lista = " + filmeLista.getLista().getId()
+                + " WHERE id_filme = " + filmeLista.getFilme().getId()
+                + " AND id_lista = " + filmeLista.getLista().getId();
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
 
     @Override
-    public void excluir(int idFilme, int idlista) throws Exception {
-        String sql = "DELETE FROM filme_lista WHERE id_filme = " + idFilme + " AND id_lista = " + idlista;
+    public void excluir(int idFilme, int idLista) throws Exception {
+        String sql = "DELETE FROM filme_lista WHERE id_filme = " + idFilme + " AND id_lista = " + idLista;
         System.out.println(sql);
         ConexaoBD.executeUpdate(sql);
     }
@@ -51,44 +51,44 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
         ArrayList<FilmeLista> filmeListas = new ArrayList();
         String sql = "SELECT * FROM filme_lista";
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            FilmeLista fl = new FilmeLista();
-            fl.setFilme(new Filme(resultado.getInt("id_filme")));
-            fl.setLista(new Lista(resultado.getInt("id_lista")));
-            filmeListas.add(fl);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            FilmeLista filmeLista = new FilmeLista();
+            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
+            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
+            filmeListas.add(filmeLista);
         }
 
         return filmeListas;
     }
 
     @Override
-    public ArrayList<FilmeLista> recuperaPorFilme(int id) throws Exception {
+    public ArrayList<FilmeLista> recuperaPorFilme(int idFilme) throws Exception {
         ArrayList<FilmeLista> filmeListas = new ArrayList();
-        String sql = "SELECT * FROM filme_lista WHERE id_filme = " + id;
+        String sql = "SELECT * FROM filme_lista WHERE id_filme = " + idFilme;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            FilmeLista fl = new FilmeLista();
-            fl.setFilme(new Filme(resultado.getInt("id_filme")));
-            fl.setLista(new Lista(resultado.getInt("id_lista")));
-            filmeListas.add(fl);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            FilmeLista filmeLista = new FilmeLista();
+            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
+            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
+            filmeListas.add(filmeLista);
         }
 
         return filmeListas;
     }
 
     @Override
-    public ArrayList<FilmeLista> recuperaPorLista(int id) throws Exception {
+    public ArrayList<FilmeLista> recuperaPorLista(int idLista) throws Exception {
         ArrayList<FilmeLista> filmeListas = new ArrayList();
-        String sql = "SELECT * FROM filme_lista WHERE id_lista = " + id;
+        String sql = "SELECT * FROM filme_lista WHERE id_lista = " + idLista;
 
-        ResultSet resultado = ConexaoBD.executeQuery(sql);
-        while (resultado.next()) {
-            FilmeLista fl = new FilmeLista();
-            fl.setFilme(new Filme(resultado.getInt("id_filme")));
-            fl.setLista(new Lista(resultado.getInt("id_lista")));
-            filmeListas.add(fl);
+        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
+        while (resultadoConsulta.next()) {
+            FilmeLista filmeLista = new FilmeLista();
+            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
+            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
+            filmeListas.add(filmeLista);
         }
 
         return filmeListas;
