@@ -22,55 +22,55 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
     private FilmesListasDAO filmesListasDAO = new FilmesListasDAO();
 
     @Override
-    public boolean salvar(FilmeLista o) {
+    public boolean salvar(FilmeLista filmeLista) {
         try {
-            filmesListasDAO.salvar(o);
+            filmesListasDAO.salvar(filmeLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar relação filme id=" + o.getFilme().getId() + ", lista id=" + o.getLista().getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
             throw new PersistenciaException("Não foi possível salvar a relação filme e lista", ex);
         }
     }
 
     @Override
-    public boolean editar(FilmeLista o) {
+    public boolean editar(FilmeLista filmeLista) {
         try {
-            filmesListasDAO.editar(o);
+            filmesListasDAO.editar(filmeLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar relação filme id=" + o.getFilme().getId() + ", lista id=" + o.getLista().getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao editar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
             throw new PersistenciaException("Não foi possível editar a relação filme e lista", ex);
         }
 
     }
 
     @Override
-    public boolean excluir(int codigoFilme, int codigoLista) {
+    public boolean excluir(int idFilme, int idLista) {
         try {
-            filmesListasDAO.excluir(codigoFilme, codigoLista);
+            filmesListasDAO.excluir(idFilme, idLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir relação filme id=" + codigoFilme + ", lista id=" + codigoLista, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir relação filme id=" + idFilme + ", lista id=" + idLista, ex);
             throw new PersistenciaException("Não foi possível excluir a relação filme e lista", ex);
         }
     }
 
     @Override
-    public ArrayList<FilmeLista> recuperaPorFilme(int codigo) {
+    public ArrayList<FilmeLista> recuperaPorFilme(int idFilme) {
         try {
-            return filmesListasDAO.recuperaPorFilme(codigo);
+            return filmesListasDAO.recuperaPorFilme(idFilme);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas do filme id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas do filme id=" + idFilme, ex);
             throw new PersistenciaException("Não foi possível recuperar as listas do filme", ex);
         }
     }
 
     @Override
-    public ArrayList<FilmeLista> recuperaPorLista(int codigo) {
+    public ArrayList<FilmeLista> recuperaPorLista(int idLista) {
         try {
-            return filmesListasDAO.recuperaPorLista(codigo);
+            return filmesListasDAO.recuperaPorLista(idLista);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes da lista id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes da lista id=" + idLista, ex);
             throw new PersistenciaException("Não foi possível recuperar os filmes da lista", ex);
         }
     }

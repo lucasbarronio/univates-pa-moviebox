@@ -22,53 +22,53 @@ public class GenerosController implements CONTROLLER_I<Genero> {
     private GenerosDAO generosDAO = new GenerosDAO();
 
     @Override
-    public boolean salvar(Genero o) {
+    public boolean salvar(Genero genero) {
         try {
-            generosDAO.salvar(o);
+            generosDAO.salvar(genero);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar gênero id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar gênero id=" + genero.getId(), ex);
             throw new PersistenciaException("Não foi possível salvar o gênero", ex);
         }
     }
 
     @Override
-    public boolean editar(Genero o) {
+    public boolean editar(Genero genero) {
         try {
-            generosDAO.editar(o);
+            generosDAO.editar(genero);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar gênero id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao editar gênero id=" + genero.getId(), ex);
             throw new PersistenciaException("Não foi possível editar o gênero", ex);
         }
 
     }
 
     @Override
-    public boolean excluir(int codigo) {
+    public boolean excluir(int idGenero) {
         try {
-            generosDAO.excluir(codigo);
+            generosDAO.excluir(idGenero);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir gênero id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir gênero id=" + idGenero, ex);
             throw new PersistenciaException("Não foi possível excluir o gênero", ex);
         }
     }
 
     @Override
-    public Genero recuperaUm(int codigo) {
+    public Genero recuperaUm(int idGenero) {
         try {
-            return generosDAO.recuperaUm(codigo);
+            return generosDAO.recuperaUm(idGenero);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar gênero id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar gênero id=" + idGenero, ex);
             throw new PersistenciaException("Não foi possível recuperar o gênero", ex);
         }
     }
 
     @Override
-    public ArrayList<Genero> recuperarTodos(String criterio) {
+    public ArrayList<Genero> recuperarTodos(String termoBusca) {
         try {
-            return generosDAO.recuperarTodos(criterio);
+            return generosDAO.recuperarTodos(termoBusca);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Falha ao recuperar gêneros", ex);
             throw new PersistenciaException("Não foi possível recuperar os gêneros", ex);

@@ -22,53 +22,53 @@ public class DiretoresController implements CONTROLLER_I<Diretor> {
     private DiretoresDAO diretoresDAO = new DiretoresDAO();
 
     @Override
-    public boolean salvar(Diretor o) {
+    public boolean salvar(Diretor diretor) {
         try {
-            diretoresDAO.salvar(o);
+            diretoresDAO.salvar(diretor);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar diretor id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar diretor id=" + diretor.getId(), ex);
             throw new PersistenciaException("Não foi possível salvar o diretor", ex);
         }
     }
 
     @Override
-    public boolean editar(Diretor o) {
+    public boolean editar(Diretor diretor) {
         try {
-            diretoresDAO.editar(o);
+            diretoresDAO.editar(diretor);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar diretor id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao editar diretor id=" + diretor.getId(), ex);
             throw new PersistenciaException("Não foi possível editar o diretor", ex);
         }
 
     }
 
     @Override
-    public boolean excluir(int codigo) {
+    public boolean excluir(int idDiretor) {
         try {
-            diretoresDAO.excluir(codigo);
+            diretoresDAO.excluir(idDiretor);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir diretor id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir diretor id=" + idDiretor, ex);
             throw new PersistenciaException("Não foi possível excluir o diretor", ex);
         }
     }
 
     @Override
-    public Diretor recuperaUm(int codigo) {
+    public Diretor recuperaUm(int idDiretor) {
         try {
-            return diretoresDAO.recuperaUm(codigo);
+            return diretoresDAO.recuperaUm(idDiretor);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar diretor id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar diretor id=" + idDiretor, ex);
             throw new PersistenciaException("Não foi possível recuperar o diretor", ex);
         }
     }
 
     @Override
-    public ArrayList<Diretor> recuperarTodos(String criterio) {
+    public ArrayList<Diretor> recuperarTodos(String termoBusca) {
         try {
-            return diretoresDAO.recuperarTodos(criterio);
+            return diretoresDAO.recuperarTodos(termoBusca);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Falha ao recuperar diretores", ex);
             throw new PersistenciaException("Não foi possível recuperar os diretores", ex);

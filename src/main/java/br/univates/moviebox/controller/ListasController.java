@@ -22,53 +22,53 @@ public class ListasController implements CONTROLLER_I<Lista> {
     private ListasDAO listasDAO = new ListasDAO();
 
     @Override
-    public boolean salvar(Lista o) {
+    public boolean salvar(Lista lista) {
         try {
-            listasDAO.salvar(o);
+            listasDAO.salvar(lista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar lista id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar lista id=" + lista.getId(), ex);
             throw new PersistenciaException("Não foi possível salvar a lista", ex);
         }
     }
 
     @Override
-    public boolean editar(Lista o) {
+    public boolean editar(Lista lista) {
         try {
-            listasDAO.editar(o);
+            listasDAO.editar(lista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar lista id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao editar lista id=" + lista.getId(), ex);
             throw new PersistenciaException("Não foi possível editar a lista", ex);
         }
 
     }
 
     @Override
-    public boolean excluir(int codigo) {
+    public boolean excluir(int idLista) {
         try {
-            listasDAO.excluir(codigo);
+            listasDAO.excluir(idLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir lista id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir lista id=" + idLista, ex);
             throw new PersistenciaException("Não foi possível excluir a lista", ex);
         }
     }
 
     @Override
-    public Lista recuperaUm(int codigo) {
+    public Lista recuperaUm(int idLista) {
         try {
-            return listasDAO.recuperaUm(codigo);
+            return listasDAO.recuperaUm(idLista);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar lista id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar lista id=" + idLista, ex);
             throw new PersistenciaException("Não foi possível recuperar a lista", ex);
         }
     }
 
     @Override
-    public ArrayList<Lista> recuperarTodos(String criterio) {
+    public ArrayList<Lista> recuperarTodos(String termoBusca) {
         try {
-            return listasDAO.recuperarTodos(criterio);
+            return listasDAO.recuperarTodos(termoBusca);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Falha ao recuperar listas", ex);
             throw new PersistenciaException("Não foi possível recuperar as listas", ex);

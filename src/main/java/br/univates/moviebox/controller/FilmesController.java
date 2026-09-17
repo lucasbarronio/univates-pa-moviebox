@@ -22,53 +22,53 @@ public class FilmesController implements CONTROLLER_I<Filme> {
     private FilmesDAO filmesDAO = new FilmesDAO();
 
     @Override
-    public boolean salvar(Filme o) {
+    public boolean salvar(Filme filme) {
         try {
-            filmesDAO.salvar(o);
+            filmesDAO.salvar(filme);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar filme id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar filme id=" + filme.getId(), ex);
             throw new PersistenciaException("Não foi possível salvar o filme", ex);
         }
     }
 
     @Override
-    public boolean editar(Filme o) {
+    public boolean editar(Filme filme) {
         try {
-            filmesDAO.editar(o);
+            filmesDAO.editar(filme);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar filme id=" + o.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Falha ao editar filme id=" + filme.getId(), ex);
             throw new PersistenciaException("Não foi possível editar o filme", ex);
         }
 
     }
 
     @Override
-    public boolean excluir(int codigo) {
+    public boolean excluir(int idFilme) {
         try {
-            filmesDAO.excluir(codigo);
+            filmesDAO.excluir(idFilme);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir filme id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir filme id=" + idFilme, ex);
             throw new PersistenciaException("Não foi possível excluir o filme", ex);
         }
     }
 
     @Override
-    public Filme recuperaUm(int codigo) {
+    public Filme recuperaUm(int idFilme) {
         try {
-            return filmesDAO.recuperaUm(codigo);
+            return filmesDAO.recuperaUm(idFilme);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar filme id=" + codigo, ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filme id=" + idFilme, ex);
             throw new PersistenciaException("Não foi possível recuperar o filme", ex);
         }
     }
 
     @Override
-    public ArrayList<Filme> recuperarTodos(String criterio) {
+    public ArrayList<Filme> recuperarTodos(String termoBusca) {
         try {
-            return filmesDAO.recuperarTodos(criterio);
+            return filmesDAO.recuperarTodos(termoBusca);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes", ex);
             throw new PersistenciaException("Não foi possível recuperar os filmes", ex);
