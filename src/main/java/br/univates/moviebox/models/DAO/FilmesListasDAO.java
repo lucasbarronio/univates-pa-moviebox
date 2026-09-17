@@ -53,10 +53,7 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            FilmeLista filmeLista = new FilmeLista();
-            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
-            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
-            filmeListas.add(filmeLista);
+            filmeListas.add(mapearFilmeLista(resultadoConsulta));
         }
 
         return filmeListas;
@@ -69,10 +66,7 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            FilmeLista filmeLista = new FilmeLista();
-            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
-            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
-            filmeListas.add(filmeLista);
+            filmeListas.add(mapearFilmeLista(resultadoConsulta));
         }
 
         return filmeListas;
@@ -85,12 +79,16 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            FilmeLista filmeLista = new FilmeLista();
-            filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
-            filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
-            filmeListas.add(filmeLista);
+            filmeListas.add(mapearFilmeLista(resultadoConsulta));
         }
 
         return filmeListas;
+    }
+
+    private FilmeLista mapearFilmeLista(ResultSet resultadoConsulta) throws SQLException {
+        FilmeLista filmeLista = new FilmeLista();
+        filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
+        filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
+        return filmeLista;
     }
 }

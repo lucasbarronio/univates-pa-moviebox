@@ -50,11 +50,7 @@ public class ListasDAO implements DAO_I<Lista> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            Lista lista = new Lista();
-            lista.setId(resultadoConsulta.getInt("id"));
-            lista.setNome(resultadoConsulta.getString("nome"));
-            lista.setDescricao(resultadoConsulta.getString("descricao"));
-            listas.add(lista);
+            listas.add(mapearLista(resultadoConsulta));
         }
 
         return listas;
@@ -67,12 +63,17 @@ public class ListasDAO implements DAO_I<Lista> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         if (resultadoConsulta.next()) {
-            lista = new Lista();
-            lista.setId(resultadoConsulta.getInt("id"));
-            lista.setNome(resultadoConsulta.getString("nome"));
-            lista.setDescricao(resultadoConsulta.getString("descricao"));
+            lista = mapearLista(resultadoConsulta);
         }
 
+        return lista;
+    }
+
+    private Lista mapearLista(ResultSet resultadoConsulta) throws SQLException {
+        Lista lista = new Lista();
+        lista.setId(resultadoConsulta.getInt("id"));
+        lista.setNome(resultadoConsulta.getString("nome"));
+        lista.setDescricao(resultadoConsulta.getString("descricao"));
         return lista;
     }
 

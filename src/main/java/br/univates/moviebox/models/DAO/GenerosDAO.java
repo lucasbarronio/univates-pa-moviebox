@@ -48,10 +48,7 @@ public class GenerosDAO implements DAO_I<Genero> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            Genero genero = new Genero();
-            genero.setId(resultadoConsulta.getInt("id"));
-            genero.setNome(resultadoConsulta.getString("nome"));
-            generos.add(genero);
+            generos.add(mapearGenero(resultadoConsulta));
         }
 
         return generos;
@@ -64,11 +61,16 @@ public class GenerosDAO implements DAO_I<Genero> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         if (resultadoConsulta.next()) {
-            genero = new Genero();
-            genero.setId(resultadoConsulta.getInt("id"));
-            genero.setNome(resultadoConsulta.getString("nome"));
+            genero = mapearGenero(resultadoConsulta);
         }
 
+        return genero;
+    }
+
+    private Genero mapearGenero(ResultSet resultadoConsulta) throws SQLException {
+        Genero genero = new Genero();
+        genero.setId(resultadoConsulta.getInt("id"));
+        genero.setNome(resultadoConsulta.getString("nome"));
         return genero;
     }
 

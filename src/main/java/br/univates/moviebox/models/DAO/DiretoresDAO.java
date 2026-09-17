@@ -50,11 +50,7 @@ public class DiretoresDAO implements DAO_I<Diretor> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            Diretor diretor = new Diretor();
-            diretor.setId(resultadoConsulta.getInt("id"));
-            diretor.setNome(resultadoConsulta.getString("nome"));
-            diretor.setNacionalidade(resultadoConsulta.getString("nacionalidade"));
-            diretores.add(diretor);
+            diretores.add(mapearDiretor(resultadoConsulta));
         }
 
         return diretores;
@@ -67,12 +63,17 @@ public class DiretoresDAO implements DAO_I<Diretor> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         if (resultadoConsulta.next()) {
-            diretor = new Diretor();
-            diretor.setId(resultadoConsulta.getInt("id"));
-            diretor.setNome(resultadoConsulta.getString("nome"));
-            diretor.setNacionalidade(resultadoConsulta.getString("nacionalidade"));
+            diretor = mapearDiretor(resultadoConsulta);
         }
 
+        return diretor;
+    }
+
+    private Diretor mapearDiretor(ResultSet resultadoConsulta) throws SQLException {
+        Diretor diretor = new Diretor();
+        diretor.setId(resultadoConsulta.getInt("id"));
+        diretor.setNome(resultadoConsulta.getString("nome"));
+        diretor.setNacionalidade(resultadoConsulta.getString("nacionalidade"));
         return diretor;
     }
 }

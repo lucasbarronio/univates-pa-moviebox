@@ -58,14 +58,7 @@ public class FilmesDAO implements DAO_I<Filme> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
-            Filme filme = new Filme();
-            filme.setId(resultadoConsulta.getInt("id"));
-            filme.setTitulo(resultadoConsulta.getString("titulo"));
-            filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
-            filme.setSinopse(resultadoConsulta.getString("sinopse"));
-            filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
-            filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
-            filmes.add(filme);
+            filmes.add(mapearFilme(resultadoConsulta));
         }
 
         return filmes;
@@ -78,15 +71,20 @@ public class FilmesDAO implements DAO_I<Filme> {
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         if (resultadoConsulta.next()) {
-            filme = new Filme();
-            filme.setId(resultadoConsulta.getInt("id"));
-            filme.setTitulo(resultadoConsulta.getString("titulo"));
-            filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
-            filme.setSinopse(resultadoConsulta.getString("sinopse"));
-            filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
-            filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
+            filme = mapearFilme(resultadoConsulta);
         }
 
+        return filme;
+    }
+
+    private Filme mapearFilme(ResultSet resultadoConsulta) throws SQLException {
+        Filme filme = new Filme();
+        filme.setId(resultadoConsulta.getInt("id"));
+        filme.setTitulo(resultadoConsulta.getString("titulo"));
+        filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
+        filme.setSinopse(resultadoConsulta.getString("sinopse"));
+        filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
+        filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
         return filme;
     }
 
