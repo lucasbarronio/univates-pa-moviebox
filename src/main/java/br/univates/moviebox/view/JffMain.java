@@ -1,19 +1,18 @@
+package br.univates.moviebox.view;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package br.univates.moviebox.view;
 
 /**
  *
  * @author lucas
  */
 public class JffMain extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JffMain.class.getName());
 
     /**
-     * Creates new form JffMain
+     * Creates new form SketchMainFrame
      */
     public JffMain() {
         initComponents();
@@ -28,38 +27,107 @@ public class JffMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jmiFilmes = new javax.swing.JMenuItem();
+        jmiListas = new javax.swing.JMenuItem();
+        jmiGeneros = new javax.swing.JMenuItem();
+        jmiDiretores = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setLocation(new java.awt.Point(500, 500));
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
-        setSize(new java.awt.Dimension(0, 0));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("[WIP] MovieBox");
-        jLabel1.setToolTipText("");
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 569, Short.MAX_VALUE)
+        );
+
+        jMenu1.setText("Sistemas");
+        jMenu1.setPreferredSize(new java.awt.Dimension(80, 30));
+
+        jmiFilmes.setText("Filmes");
+        jmiFilmes.setPreferredSize(new java.awt.Dimension(160, 25));
+        jmiFilmes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiFilmesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiFilmes);
+
+        jmiListas.setText("Listas");
+        jmiListas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiListasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiListas);
+
+        jmiGeneros.setText("Gêneros");
+        jmiGeneros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiGenerosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiGeneros);
+
+        jmiDiretores.setText("Diretores");
+        jmiDiretores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiDiretoresActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiDiretores);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(272, 272, 272)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(271, 271, 271))
+            .addComponent(jDesktopPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(144, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                .addContainerGap(144, Short.MAX_VALUE))
+            .addComponent(jDesktopPane1)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jmiFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFilmesActionPerformed
+        IfrFilmes janela = new IfrFilmes();
+        jDesktopPane1.add(janela);
+        janela.setVisible(true);
+    }//GEN-LAST:event_jmiFilmesActionPerformed
+
+    private void jmiListasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiListasActionPerformed
+        IfrListas janela = new IfrListas();
+        jDesktopPane1.add(janela);
+        janela.setVisible(true);
+    }//GEN-LAST:event_jmiListasActionPerformed
+
+    private void jmiGenerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGenerosActionPerformed
+        IfrGeneros janela = new IfrGeneros();
+        jDesktopPane1.add(janela);
+        janela.setVisible(true);
+    }//GEN-LAST:event_jmiGenerosActionPerformed
+
+    private void jmiDiretoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiDiretoresActionPerformed
+        IfrDiretores janela = new IfrDiretores();
+        jDesktopPane1.add(janela);
+        janela.setVisible(true);
+    }//GEN-LAST:event_jmiDiretoresActionPerformed
 
     /**
      * @param args the command line arguments
@@ -77,16 +145,48 @@ public class JffMain extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(JffMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JffMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JffMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JffMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JffMain().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new JffMain().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jmiDiretores;
+    private javax.swing.JMenuItem jmiFilmes;
+    private javax.swing.JMenuItem jmiGeneros;
+    private javax.swing.JMenuItem jmiListas;
     // End of variables declaration//GEN-END:variables
 }
