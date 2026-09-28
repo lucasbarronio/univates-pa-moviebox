@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public interface FILMESLISTASCONTROLLER_I<O> {
     public boolean salvar(O o);
-    public boolean editar(O o);
+    public boolean existe(O o);
     public boolean excluir(int codigoFilme, int codigoLista);
     public ArrayList<O> recuperaPorFilme(int codigo);
     public ArrayList<O> recuperaPorLista(int codigo);

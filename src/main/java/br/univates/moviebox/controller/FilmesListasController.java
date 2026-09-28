@@ -33,15 +33,13 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
     }
 
     @Override
-    public boolean editar(FilmeLista filmeLista) {
+    public boolean existe(FilmeLista filmeLista) {
         try {
-            filmesListasDAO.editar(filmeLista);
-            return true;
+            return filmesListasDAO.existe(filmeLista);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao editar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
-            throw new PersistenciaException("Não foi possível editar a relação filme e lista", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao verificar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
+            throw new PersistenciaException("Não foi possível verificar a relação filme e lista", ex);
         }
-
     }
 
     @Override

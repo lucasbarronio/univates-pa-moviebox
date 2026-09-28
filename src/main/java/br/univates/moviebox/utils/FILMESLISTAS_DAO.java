@@ -14,7 +14,7 @@ public interface FILMESLISTAS_DAO<O> {
 
     public void salvar(O o) throws Exception;
 
-    public void editar(O o) throws Exception;
+    public boolean existe(O o) throws Exception;
 
     public void excluir(int codigoFilme, int codigoLista) throws Exception;
 

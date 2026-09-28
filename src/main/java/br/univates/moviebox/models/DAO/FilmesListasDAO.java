@@ -30,13 +30,13 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
     }
 
     @Override
-    public void editar(FilmeLista filmeLista) throws Exception {
-        String sql = "UPDATE filme_lista SET id_filme = " + filmeLista.getFilme().getId()
-                + ", id_lista = " + filmeLista.getLista().getId()
-                + " WHERE id_filme = " + filmeLista.getFilme().getId()
-                + " AND id_lista = " + filmeLista.getLista().getId();
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+    public boolean existe(FilmeLista filmeLista) throws Exception {
+        String sql = "SELECT 1 FROM filme_lista WHERE id_filme = "
+                + filmeLista.getFilme().getId() + " AND id_lista = "
+                + filmeLista.getLista().getId();
+        try (ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql)) {
+            return resultadoConsulta.next();
+        }
     }
 
     @Override
@@ -48,8 +48,8 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     @Override
     public ArrayList<FilmeLista> recuperarTodos() throws Exception {
-        ArrayList<FilmeLista> filmeListas = new ArrayList();
-        String sql = "SELECT * FROM filme_lista";
+        ArrayList<FilmeLista> filmeListas = new ArrayList<>();
+        String sql = sqlRelacionamentos();
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
@@ -61,8 +61,8 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     @Override
     public ArrayList<FilmeLista> recuperaPorFilme(int idFilme) throws Exception {
-        ArrayList<FilmeLista> filmeListas = new ArrayList();
-        String sql = "SELECT * FROM filme_lista WHERE id_filme = " + idFilme;
+        ArrayList<FilmeLista> filmeListas = new ArrayList<>();
+        String sql = sqlRelacionamentos() + " WHERE filme.id = " + idFilme;
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
@@ -74,8 +74,8 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     @Override
     public ArrayList<FilmeLista> recuperaPorLista(int idLista) throws Exception {
-        ArrayList<FilmeLista> filmeListas = new ArrayList();
-        String sql = "SELECT * FROM filme_lista WHERE id_lista = " + idLista;
+        ArrayList<FilmeLista> filmeListas = new ArrayList<>();
+        String sql = sqlRelacionamentos() + " WHERE lista.id = " + idLista;
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {
@@ -87,8 +87,21 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     private FilmeLista mapearFilmeLista(ResultSet resultadoConsulta) throws SQLException {
         FilmeLista filmeLista = new FilmeLista();
-        filmeLista.setFilme(new Filme(resultadoConsulta.getInt("id_filme")));
-        filmeLista.setLista(new Lista(resultadoConsulta.getInt("id_lista")));
+        Filme filme = new Filme(resultadoConsulta.getInt("id_filme"));
+        filme.setTitulo(resultadoConsulta.getString("titulo_filme"));
+        filmeLista.setFilme(filme);
+
+        Lista lista = new Lista(resultadoConsulta.getInt("id_lista"));
+        lista.setNome(resultadoConsulta.getString("nome_lista"));
+        filmeLista.setLista(lista);
         return filmeLista;
+    }
+
+    private String sqlRelacionamentos() {
+        return "SELECT filme_lista.id_filme, filme.titulo AS titulo_filme, "
+            + "filme_lista.id_lista, lista.nome AS nome_lista "
+            + "FROM filme_lista "
+            + "JOIN filme ON filme.id = filme_lista.id_filme "
+            + "JOIN lista ON lista.id = filme_lista.id_lista";
     }
 }
