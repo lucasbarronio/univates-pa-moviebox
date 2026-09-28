@@ -3,7 +3,12 @@ package br.univates.moviebox.view;
 import br.univates.moviebox.controller.FilmesController;
 import br.univates.moviebox.controller.DiretoresController;
 import br.univates.moviebox.controller.GenerosController;
+import br.univates.moviebox.controller.FilmesListasController;
+import br.univates.moviebox.controller.ListasController;
 import br.univates.moviebox.models.Diretor;
+import br.univates.moviebox.models.FilmeLista;
+import br.univates.moviebox.models.Lista;
+import br.univates.moviebox.utils.ComboItem;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
@@ -23,12 +28,20 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
     FilmesController filmesController;
     DiretoresController diretoresController;
     GenerosController generosController;
+    FilmesListasController filmesListasController;
+    ListasController listasController;
+    javax.swing.JComboBox<ComboItem> cmbListas;
+    javax.swing.JTable tblListasDoFilme;
+    javax.swing.JLabel lblStatusListas;
     
     public IfrFilmes() {
         initComponents();
         filmesController = new FilmesController();
         diretoresController = new DiretoresController();
         generosController = new GenerosController();
+        filmesListasController = new FilmesListasController();
+        listasController = new ListasController();
+        configuraRelacionamentos();
         carregaInformacoes(txtPesquisar.getText());
     }
     
@@ -328,6 +341,112 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
             }
         }
         return null;
+    }
+
+    private void configuraRelacionamentos() {
+        javax.swing.JPanel painel = new javax.swing.JPanel(new java.awt.BorderLayout(8, 8));
+        javax.swing.JPanel controles = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        cmbListas = new javax.swing.JComboBox<>();
+        javax.swing.JButton btnAdicionar = new javax.swing.JButton("Adicionar à lista");
+        javax.swing.JButton btnRemover = new javax.swing.JButton("Remover da lista");
+        tblListasDoFilme = new javax.swing.JTable();
+        lblStatusListas = new javax.swing.JLabel("Selecione um filme para consultar suas listas.");
+
+        controles.add(new javax.swing.JLabel("Lista:"));
+        controles.add(cmbListas);
+        controles.add(btnAdicionar);
+        controles.add(btnRemover);
+        painel.add(controles, java.awt.BorderLayout.NORTH);
+        painel.add(new javax.swing.JScrollPane(tblListasDoFilme), java.awt.BorderLayout.CENTER);
+        painel.add(lblStatusListas, java.awt.BorderLayout.SOUTH);
+        jTabbedPane1.addTab("Listas do filme", painel);
+
+        btnAdicionar.addActionListener(evt -> adicionarFilmeALista());
+        btnRemover.addActionListener(evt -> removerFilmeDaLista());
+        tblFilmes.getSelectionModel().addListSelectionListener(evt -> carregaListasDoFilme());
+        carregaListasDisponiveis();
+    }
+
+    private void carregaListasDisponiveis() {
+        cmbListas.removeAllItems();
+        for (Lista lista : listasController.recuperarTodos("")) {
+            ComboItem item = new ComboItem();
+            item.setCodigo(lista.getId());
+            item.setDescricao(lista.getNome());
+            cmbListas.addItem(item);
+        }
+    }
+
+    private void carregaListasDoFilme() {
+        int linha = tblFilmes.getSelectedRow();
+        if (linha < 0) {
+            tblListasDoFilme.setModel(new javax.swing.table.DefaultTableModel());
+            lblStatusListas.setText("Selecione um filme para consultar suas listas.");
+            return;
+        }
+
+        int idFilme = Integer.parseInt(String.valueOf(tblFilmes.getModel().getValueAt(linha, 0)));
+        ArrayList<FilmeLista> relacionamentos = filmesListasController.recuperaPorFilme(idFilme);
+        tblListasDoFilme.setModel(new javax.swing.table.AbstractTableModel() {
+            @Override
+            public int getRowCount() {
+                return relacionamentos.size();
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 2;
+            }
+
+            @Override
+            public String getColumnName(int column) {
+                return column == 0 ? "Código" : "Lista";
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                Lista lista = relacionamentos.get(rowIndex).getLista();
+                return columnIndex == 0 ? lista.getId() : lista.getNome();
+            }
+        });
+        lblStatusListas.setText(relacionamentos.isEmpty()
+                ? "Nenhuma relação cadastrada."
+                : relacionamentos.size() + " lista(s) relacionada(s).");
+    }
+
+    private void adicionarFilmeALista() {
+        int linha = tblFilmes.getSelectedRow();
+        ComboItem item = (ComboItem) cmbListas.getSelectedItem();
+        if (linha < 0 || item == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um filme e uma lista.");
+            return;
+        }
+
+        int idFilme = Integer.parseInt(String.valueOf(tblFilmes.getModel().getValueAt(linha, 0)));
+        FilmeLista relacionamento = new FilmeLista(new Filme(idFilme), new Lista(item.getCodigo()));
+        if (filmesListasController.existe(relacionamento)) {
+            JOptionPane.showMessageDialog(null, "Este filme já está nesta lista.");
+            return;
+        }
+
+        filmesListasController.salvar(relacionamento);
+        carregaListasDoFilme();
+        JOptionPane.showMessageDialog(null, "Filme adicionado à lista.");
+    }
+
+    private void removerFilmeDaLista() {
+        int linhaFilme = tblFilmes.getSelectedRow();
+        int linhaLista = tblListasDoFilme.getSelectedRow();
+        if (linhaFilme < 0 || linhaLista < 0) {
+            JOptionPane.showMessageDialog(null, "Selecione um filme e uma lista relacionada.");
+            return;
+        }
+
+        int idFilme = Integer.parseInt(String.valueOf(tblFilmes.getModel().getValueAt(linhaFilme, 0)));
+        int idLista = Integer.parseInt(String.valueOf(tblListasDoFilme.getModel().getValueAt(linhaLista, 0)));
+        filmesListasController.excluir(idFilme, idLista);
+        carregaListasDoFilme();
+        JOptionPane.showMessageDialog(null, "Filme removido da lista.");
     }
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         carregaInformacoes(txtPesquisar.getText());
