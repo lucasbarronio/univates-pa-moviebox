@@ -94,11 +94,11 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
                             case 1:
                                 return t.getTitulo();
                             case 2:
-                                return t.getDiretor();
+                                return t.getDiretor() == null ? "n/d" : t.getDiretor().getNome();
                             case 3:
                                 return t.getAno_lancamento();
                             case 4:
-                                return t.getGenero();
+                                return t.getGenero() == null ? "n/d" : t.getGenero().getNome();
                             case 5:
                                 return t.getSinopse();
                         }                        
@@ -510,6 +510,8 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         Filme filmes = filmesController.recuperaUm(codigo);
         if (filmes == null) {
             JOptionPane.showMessageDialog(null, "Filme não encontrado.");
+        } else if (filmes.getDiretor() == null || filmes.getGenero() == null) {
+            JOptionPane.showMessageDialog(null, "O filme não possui diretor ou gênero válido.");
         } else {
             txtCodigo.setText(String.valueOf(codigo));
             txtTitulo.setText(filmes.getTitulo());
