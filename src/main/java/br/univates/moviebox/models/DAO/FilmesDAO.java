@@ -53,12 +53,16 @@ public class FilmesDAO implements DAO_I<Filme> {
 
     @Override
     public ArrayList<Filme> recuperarTodos(String termoBusca) throws Exception {
-        ArrayList<Filme> filmes = new ArrayList();
-        String sql = "SELECT * FROM filme WHERE titulo LIKE '%" + termoBusca + "%'";
+        ArrayList<Filme> filmes = new ArrayList<>();
+        String sql = sqlFilmesComRelacionamentos() + " WHERE filme.titulo LIKE ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            filmes.add(mapearFilme(resultadoConsulta));
+        try (PreparedStatement consulta = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            consulta.setString(1, "%" + termoBusca + "%");
+            try (ResultSet resultadoConsulta = consulta.executeQuery()) {
+                while (resultadoConsulta.next()) {
+                    filmes.add(mapearFilme(resultadoConsulta));
+                }
+            }
         }
 
         return filmes;
@@ -67,11 +71,15 @@ public class FilmesDAO implements DAO_I<Filme> {
     @Override
     public Filme recuperaUm(int idFilme) throws Exception {
         Filme filme = null;
-        String sql = "SELECT * FROM filme WHERE id = " + idFilme;
+        String sql = sqlFilmesComRelacionamentos() + " WHERE filme.id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        if (resultadoConsulta.next()) {
-            filme = mapearFilme(resultadoConsulta);
+        try (PreparedStatement consulta = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            consulta.setInt(1, idFilme);
+            try (ResultSet resultadoConsulta = consulta.executeQuery()) {
+                if (resultadoConsulta.next()) {
+                    filme = mapearFilme(resultadoConsulta);
+                }
+            }
         }
 
         return filme;
@@ -83,9 +91,24 @@ public class FilmesDAO implements DAO_I<Filme> {
         filme.setTitulo(resultadoConsulta.getString("titulo"));
         filme.setAno_lancamento(resultadoConsulta.getInt("ano_lancamento"));
         filme.setSinopse(resultadoConsulta.getString("sinopse"));
-        filme.setDiretor(new Diretor(resultadoConsulta.getInt("id_diretor")));
-        filme.setGenero(new Genero(resultadoConsulta.getInt("id_genero")));
+
+        Diretor diretor = new Diretor(resultadoConsulta.getInt("id_diretor"));
+        diretor.setNome(resultadoConsulta.getString("nome_diretor"));
+        filme.setDiretor(diretor);
+
+        Genero genero = new Genero(resultadoConsulta.getInt("id_genero"));
+        genero.setNome(resultadoConsulta.getString("nome_genero"));
+        filme.setGenero(genero);
         return filme;
+    }
+
+    private String sqlFilmesComRelacionamentos() {
+        return "SELECT filme.id, filme.titulo, filme.ano_lancamento, filme.sinopse, "
+                + "filme.id_diretor, diretor.nome AS nome_diretor, "
+                + "filme.id_genero, genero.nome AS nome_genero "
+                + "FROM filme "
+                + "JOIN diretor ON diretor.id = filme.id_diretor "
+                + "JOIN genero ON genero.id = filme.id_genero";
     }
 
 }
