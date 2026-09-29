@@ -41,6 +41,8 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         generosController = new GenerosController();
         filmesListasController = new FilmesListasController();
         listasController = new ListasController();
+        carregaDiretores();
+        carregaGeneros();
         configuraRelacionamentos();
         carregaInformacoes(txtPesquisar.getText());
     }
@@ -117,13 +119,13 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         jlblTitulo = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         txtTitulo = new javax.swing.JTextField();
-        txtDiretor = new javax.swing.JTextField();
+        cmbDiretor = new javax.swing.JComboBox<>();
         jlblDiretor = new javax.swing.JLabel();
         txtAno = new javax.swing.JTextField();
         jlblAno = new javax.swing.JLabel();
         jlblCodigo = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        txtGenero = new javax.swing.JTextField();
+        cmbGenero = new javax.swing.JComboBox<>();
         jlblGenero = new javax.swing.JLabel();
         jlblSinopse = new javax.swing.JLabel();
         txtSinopse = new javax.swing.JTextField();
@@ -145,12 +147,6 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
-            }
-        });
-
-        txtDiretor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDiretorActionPerformed(evt);
             }
         });
 
@@ -178,9 +174,9 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSalvar))
                     .addComponent(txtTitulo)
-                    .addComponent(txtDiretor)
+                    .addComponent(cmbDiretor)
                     .addComponent(jlblDiretor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtGenero)
+                    .addComponent(cmbGenero)
                     .addComponent(jlblGenero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtAno)
                     .addComponent(jlblAno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -206,11 +202,11 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblDiretor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDiretor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbDiretor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblGenero)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblAno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -319,28 +315,40 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
     private void limpaCampos() {
         txtCodigo.setText("");
         txtTitulo.setText("");
-        txtDiretor.setText("");
+        cmbDiretor.setSelectedIndex(-1);
         txtAno.setText("");
-        txtGenero.setText("");
+        cmbGenero.setSelectedIndex(-1);
         txtSinopse.setText("");
     }
 
-    private Diretor buscarDiretor(String nome) {
-        for (Diretor diretor : diretoresController.recuperarTodos(nome)) {
-            if (diretor.getNome().equalsIgnoreCase(nome.trim())) {
-                return diretor;
-            }
+    private void carregaDiretores() {
+        cmbDiretor.removeAllItems();
+        for (Diretor diretor : diretoresController.recuperarTodos("")) {
+            ComboItem item = new ComboItem();
+            item.setCodigo(diretor.getId());
+            item.setDescricao(diretor.getNome());
+            cmbDiretor.addItem(item);
         }
-        return null;
     }
 
-    private Genero buscarGenero(String nome) {
-        for (Genero genero : generosController.recuperarTodos(nome)) {
-            if (genero.getNome().equalsIgnoreCase(nome.trim())) {
-                return genero;
+    private void carregaGeneros() {
+        cmbGenero.removeAllItems();
+        for (Genero genero : generosController.recuperarTodos("")) {
+            ComboItem item = new ComboItem();
+            item.setCodigo(genero.getId());
+            item.setDescricao(genero.getNome());
+            cmbGenero.addItem(item);
+        }
+    }
+
+    private void selecionaComboPorCodigo(javax.swing.JComboBox<ComboItem> combo, int codigo) {
+        for (int indice = 0; indice < combo.getItemCount(); indice++) {
+            if (combo.getItemAt(indice).getCodigo() == codigo) {
+                combo.setSelectedIndex(indice);
+                return;
             }
         }
-        return null;
+        combo.setSelectedIndex(-1);
     }
 
     private void configuraRelacionamentos() {
@@ -452,21 +460,20 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         carregaInformacoes(txtPesquisar.getText());
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void txtDiretorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiretorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDiretorActionPerformed
-
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String titulo = txtTitulo.getText();
-        Diretor diretor = buscarDiretor(txtDiretor.getText());
+        ComboItem diretorItem = (ComboItem) cmbDiretor.getSelectedItem();
         int ano_lancamento = Integer.parseInt(txtAno.getText());
-        Genero genero = buscarGenero(txtGenero.getText());
+        ComboItem generoItem = (ComboItem) cmbGenero.getSelectedItem();
         String sinopse = txtSinopse.getText();
 
-        if (diretor == null || genero == null) {
-            JOptionPane.showMessageDialog(null, "Diretor ou gênero não encontrado.");
+        if (diretorItem == null || generoItem == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um diretor e um gênero.");
             return;
         }
+
+        Diretor diretor = new Diretor(diretorItem.getCodigo());
+        Genero genero = new Genero(generoItem.getCodigo());
         
         if (txtCodigo.getText().equals("")) {
             Filme novoFilme = new Filme(titulo, ano_lancamento, sinopse, diretor, genero);
@@ -506,9 +513,9 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         } else {
             txtCodigo.setText(String.valueOf(codigo));
             txtTitulo.setText(filmes.getTitulo());
-            txtDiretor.setText(filmes.getDiretor().getNome());
+            selecionaComboPorCodigo(cmbDiretor, filmes.getDiretor().getId());
             txtAno.setText(Integer.toString(filmes.getAno_lancamento()));
-            txtGenero.setText(filmes.getGenero().getNome());
+            selecionaComboPorCodigo(cmbGenero, filmes.getGenero().getId());
             txtSinopse.setText(filmes.getSinopse());
             jTabbedPane1.setSelectedIndex(0);
         }
@@ -559,8 +566,8 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
     private javax.swing.JTable tblFilmes;
     private javax.swing.JTextField txtAno;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtDiretor;
-    private javax.swing.JTextField txtGenero;
+    private javax.swing.JComboBox<ComboItem> cmbDiretor;
+    private javax.swing.JComboBox<ComboItem> cmbGenero;
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtSinopse;
     private javax.swing.JTextField txtTitulo;

@@ -59,9 +59,9 @@
                               <Component id="btnSalvar" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="txtTitulo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtDiretor" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbDiretor" alignment="0" max="32767" attributes="0"/>
                           <Component id="jlblDiretor" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtGenero" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbGenero" alignment="0" max="32767" attributes="0"/>
                           <Component id="jlblGenero" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtAno" max="32767" attributes="0"/>
                           <Component id="jlblAno" alignment="0" max="32767" attributes="0"/>
@@ -91,11 +91,11 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jlblDiretor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtDiretor" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbDiretor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jlblGenero" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtGenero" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbGenero" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jlblAno" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -127,10 +127,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtTitulo">
             </Component>
-            <Component class="javax.swing.JTextField" name="txtDiretor">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDiretorActionPerformed"/>
-              </Events>
+            <Component class="javax.swing.JComboBox" name="cmbDiretor">
             </Component>
             <Component class="javax.swing.JLabel" name="jlblDiretor">
               <Properties>
@@ -154,7 +151,7 @@
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtGenero">
+            <Component class="javax.swing.JComboBox" name="cmbGenero">
             </Component>
             <Component class="javax.swing.JLabel" name="jlblGenero">
               <Properties>
