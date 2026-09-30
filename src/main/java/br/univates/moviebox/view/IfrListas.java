@@ -24,9 +24,6 @@ public class IfrListas extends javax.swing.JInternalFrame {
     ListasController listasController;
     FilmesController filmesController;
     FilmesListasController filmesListasController;
-    javax.swing.JComboBox<ComboItem> cmbFilmes;
-    javax.swing.JTable tblFilmesDaLista;
-    javax.swing.JLabel lblStatusFilmes;
     
     public IfrListas() {
         initComponents();
@@ -88,7 +85,6 @@ public class IfrListas extends javax.swing.JInternalFrame {
         }
     }
     
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -108,6 +104,14 @@ public class IfrListas extends javax.swing.JInternalFrame {
         btnExcluir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListas = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        btnRemover = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblFilmesDaLista = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        btnAdicionar = new javax.swing.JButton();
+        cmbFilmes = new javax.swing.JComboBox();
+        lblStatusFilmes = new javax.swing.JLabel();
 
         setClosable(true);
         setResizable(true);
@@ -253,6 +257,75 @@ public class IfrListas extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Consulta", jPanel2);
 
+        btnRemover.setText("Remover filme");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        tblFilmesDaLista.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        tblFilmesDaLista.setShowGrid(true);
+        jScrollPane3.setViewportView(tblFilmesDaLista);
+
+        jLabel1.setText("Filme:");
+
+        btnAdicionar.setText("Adicionar filme");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbFilmes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblStatusFilmes)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRemover)
+                    .addComponent(jLabel1)
+                    .addComponent(btnAdicionar)
+                    .addComponent(cmbFilmes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblStatusFilmes)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Filmes da lista", jPanel3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -273,25 +346,6 @@ public class IfrListas extends javax.swing.JInternalFrame {
     }
 
     private void configuraRelacionamentos() {
-        javax.swing.JPanel painel = new javax.swing.JPanel(new java.awt.BorderLayout(8, 8));
-        javax.swing.JPanel controles = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        cmbFilmes = new javax.swing.JComboBox<>();
-        javax.swing.JButton btnAdicionar = new javax.swing.JButton("Adicionar filme");
-        javax.swing.JButton btnRemover = new javax.swing.JButton("Remover filme");
-        tblFilmesDaLista = new javax.swing.JTable();
-        lblStatusFilmes = new javax.swing.JLabel("Selecione uma lista para consultar seus filmes.");
-
-        controles.add(new javax.swing.JLabel("Filme:"));
-        controles.add(cmbFilmes);
-        controles.add(btnAdicionar);
-        controles.add(btnRemover);
-        painel.add(controles, java.awt.BorderLayout.NORTH);
-        painel.add(new javax.swing.JScrollPane(tblFilmesDaLista), java.awt.BorderLayout.CENTER);
-        painel.add(lblStatusFilmes, java.awt.BorderLayout.SOUTH);
-        jTabbedPane1.addTab("Filmes da lista", painel);
-
-        btnAdicionar.addActionListener(evt -> adicionarFilmeALista());
-        btnRemover.addActionListener(evt -> removerFilmeDaLista());
         tblListas.getSelectionModel().addListSelectionListener(evt -> carregaFilmesDaLista());
         carregaFilmesDisponiveis();
     }
@@ -458,19 +512,35 @@ public class IfrListas extends javax.swing.JInternalFrame {
         carregaInformacoes(txtPesquisar.getText());
     }//GEN-LAST:event_txtPesquisarKeyReleased
 
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        removerFilmeDaLista();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        adicionarFilmeALista();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox cmbFilmes;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel jlblCodigo;
     private javax.swing.JLabel jlblDescricao;
     private javax.swing.JLabel jlblNome;
+    private javax.swing.JLabel lblStatusFilmes;
+    private javax.swing.JTable tblFilmesDaLista;
     private javax.swing.JTable tblListas;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;

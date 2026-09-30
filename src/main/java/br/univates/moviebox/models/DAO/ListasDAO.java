@@ -38,9 +38,25 @@ public class ListasDAO implements DAO_I<Lista> {
 
     @Override
     public void excluir(int idLista) throws Exception {
-        String sql = "DELETE FROM lista WHERE id = " + idLista;
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        Connection conexao = ConexaoBD.getInstance().getConnection();
+        boolean autoCommitAnterior = conexao.getAutoCommit();
+        try {
+            conexao.setAutoCommit(false);
+            String sqlRelacionamentos = "DELETE FROM filme_lista WHERE id_lista = " + idLista;
+            String sqlLista = "DELETE FROM lista WHERE id = " + idLista;
+            System.out.println(sqlRelacionamentos);
+            System.out.println(sqlLista);
+            try (Statement statement = conexao.createStatement()) {
+                statement.executeUpdate(sqlRelacionamentos);
+                statement.executeUpdate(sqlLista);
+            }
+            conexao.commit();
+        } catch (Exception ex) {
+            conexao.rollback();
+            throw ex;
+        } finally {
+            conexao.setAutoCommit(autoCommitAnterior);
+        }
     }
 
     @Override

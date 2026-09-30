@@ -46,9 +46,25 @@ public class FilmesDAO implements DAO_I<Filme> {
 
     @Override
     public void excluir(int idFilme) throws Exception {
-        String sql = "DELETE FROM filme WHERE id = " + idFilme;
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        Connection conexao = ConexaoBD.getInstance().getConnection();
+        boolean autoCommitAnterior = conexao.getAutoCommit();
+        try {
+            conexao.setAutoCommit(false);
+            String sqlRelacionamentos = "DELETE FROM filme_lista WHERE id_filme = " + idFilme;
+            String sqlFilme = "DELETE FROM filme WHERE id = " + idFilme;
+            System.out.println(sqlRelacionamentos);
+            System.out.println(sqlFilme);
+            try (Statement statement = conexao.createStatement()) {
+                statement.executeUpdate(sqlRelacionamentos);
+                statement.executeUpdate(sqlFilme);
+            }
+            conexao.commit();
+        } catch (Exception ex) {
+            conexao.rollback();
+            throw ex;
+        } finally {
+            conexao.setAutoCommit(autoCommitAnterior);
+        }
     }
 
     @Override
