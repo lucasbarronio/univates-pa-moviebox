@@ -321,7 +321,7 @@ public class IfrDiretores extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Diretor " + codigo + " apagado com sucesso!");
                 carregaInformacoes(txtPesquisar.getText());
             } else {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o diretor " + codigo);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o diretor " + codigo + ".");
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed

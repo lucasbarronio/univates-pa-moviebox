@@ -339,8 +339,8 @@ public class IfrListas extends javax.swing.JInternalFrame {
             }
         });
         lblStatusFilmes.setText(relacionamentos.isEmpty()
-                ? "Nenhuma relação cadastrada."
-                : relacionamentos.size() + " filme(s) relacionado(s).");
+                ? "Nenhum filme relacionado."
+                : "Filmes relacionados: " + relacionamentos.size() + ".");
     }
 
     private void adicionarFilmeALista() {
@@ -449,7 +449,7 @@ public class IfrListas extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Lista " + codigo + " apagada com sucesso!");
                 carregaInformacoes(txtPesquisar.getText());
             } else {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir a Lista " + codigo);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir a lista " + codigo + ".");
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed

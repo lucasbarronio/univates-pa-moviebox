@@ -302,7 +302,7 @@ public class IfrGeneros extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Gênero " + codigo + " apagado com sucesso!");
                 carregaInformacoes(txtPesquisar.getText());
             } else {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o gênero " + codigo);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o gênero " + codigo + ".");
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed

@@ -418,8 +418,8 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
             }
         });
         lblStatusListas.setText(relacionamentos.isEmpty()
-                ? "Nenhuma relação cadastrada."
-                : relacionamentos.size() + " lista(s) relacionada(s).");
+                ? "Nenhuma lista relacionada."
+                : "Listas relacionadas: " + relacionamentos.size() + ".");
     }
 
     private void adicionarFilmeALista() {
@@ -511,7 +511,7 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         if (filmes == null) {
             JOptionPane.showMessageDialog(null, "Filme não encontrado.");
         } else if (filmes.getDiretor() == null || filmes.getGenero() == null) {
-            JOptionPane.showMessageDialog(null, "O filme não possui diretor ou gênero válido.");
+            JOptionPane.showMessageDialog(null, "O filme não possui diretor e gênero válidos.");
         } else {
             txtCodigo.setText(String.valueOf(codigo));
             txtTitulo.setText(filmes.getTitulo());
@@ -537,10 +537,10 @@ public class IfrFilmes extends javax.swing.JInternalFrame {
         } else {
             boolean retorno = filmesController.excluir(codigo);
             if (retorno) {
-                JOptionPane.showMessageDialog(null, "Filme " + codigo + " apagada com sucesso!");
+                JOptionPane.showMessageDialog(null, "Filme " + codigo + " apagado com sucesso!");
                 carregaInformacoes(txtPesquisar.getText());
             } else {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o filme " + codigo);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o filme " + codigo + ".");
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
