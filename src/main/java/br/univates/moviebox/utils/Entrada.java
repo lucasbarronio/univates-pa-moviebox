@@ -21,13 +21,13 @@ import javax.swing.*;
 
 public class Entrada {
     // instance variables
-    static final String STRING_TITLE = "Entre com uma string";
-    static final String CHAR_TITLE = "Entre com um char";
-    static final String INT_TITLE = "Entre com um int";
-    static final String BOOLEAN_TITLE = "Selecione true ou false";
-    static final String DOUBLE_TITLE = "Entre com um double";
-    static final String TRUE = "true";
-    static final String FALSE = "false";
+    static final String STRING_TITLE = "Digite um texto";
+    static final String CHAR_TITLE = "Digite um caractere";
+    static final String INT_TITLE = "Digite um número inteiro";
+    static final String BOOLEAN_TITLE = "Selecione uma opção";
+    static final String DOUBLE_TITLE = "Digite um número decimal";
+    static final String TRUE = "Verdadeiro";
+    static final String FALSE = "Falso";
     static final String EMPTY_STRING = "";
     
     /**
@@ -89,11 +89,11 @@ public class Entrada {
                 if (result != null) // EA: added for completnes
                     validResponse = true;
                 else {
-                    commentArray[1] = "Entrada inv�lida: ";
-                    commentArray[2] = "Entre com uma string v�lida";
+                    commentArray[1] = "Entrada inválida:";
+                    commentArray[2] = "Digite um texto válido.";
                 }
             } else {
-                commentArray[1] = "Precisa entrar com uma string";
+                commentArray[1] = "É necessário digitar um texto.";
                 commentArray[2] = EMPTY_STRING;
             }
         }
@@ -170,15 +170,15 @@ public class Entrada {
                         response = result.charAt(0);
                         validResponse = true;
                     } else {
-                        commentArray[1] = "Entrada inv�lida: " + result;
-                        commentArray[2] = "Entre com apenas um caracter";
+                        commentArray[1] = "Entrada inválida: " + result;
+                        commentArray[2] = "Digite apenas um caractere.";
                     }
                 } else {
-                    commentArray[1] = "Entrada inv�lida"; // EA: corrected, no point to print null-object. Question: when it is possible to have null objects?
-                    commentArray[2] = "Entre com apenas um caracter";
+                    commentArray[1] = "Entrada inválida."; // EA: corrected, no point to print null-object. Question: when it is possible to have null objects?
+                    commentArray[2] = "Digite apenas um caractere.";
                 }
             } else {
-                commentArray[1] = "Precisa entrar com apenas um caracter";  //EA: error corrected, result removed
+                commentArray[1] = "É necessário digitar um caractere.";  //EA: error corrected, result removed
                 commentArray[2] = EMPTY_STRING; //EA: cannot use result since it is not initialized
             }
         }
@@ -230,7 +230,7 @@ public class Entrada {
             {
                 validResponse = true;
             } else {
-                commentArray[1] = "Sele��o incorreta: escolha os bot�es true ou false";
+                commentArray[1] = "Seleção inválida: escolha uma das opções.";
             }
         }
         return (result == 0);
@@ -295,13 +295,13 @@ public class Entrada {
             // EA: added or corrected non-portable check for uninitialized value situation
             Object input = optionPane.getInputValue();
             if (input == JOptionPane.UNINITIALIZED_VALUE) {
-                commentArray[1] = "Precisa entrar com um valor inteiro"; // EA: explanatory text added
+                commentArray[1] = "É necessário digitar um número inteiro."; // EA: explanatory text added
                 commentArray[2] = EMPTY_STRING;
             } else {
                 String result = (String) input;
                 if (result == null) { // EA: added for completnes, but is this situation possible?
-                    commentArray[1] = "Valor inteiro inv�lido:";
-                    commentArray[2] = "Entre com um valor inteiro v�lido";
+                    commentArray[1] = "Número inteiro inválido:";
+                    commentArray[2] = "Digite um número inteiro válido.";
                 } else {
                     try {
                         //workaround for BlueJ bug - misses first exception after compilation
@@ -309,8 +309,8 @@ public class Entrada {
                         response = Integer.parseInt(result);
                         validResponse = true;
                     } catch (NumberFormatException exception) {
-                        commentArray[1] = "Valor inteiro inv�lido: " + result;
-                        commentArray[2] = "Entre com um valor inteiro v�lido";
+                        commentArray[1] = "Número inteiro inválido: " + result;
+                        commentArray[2] = "Digite um número inteiro válido.";
                         initialValue = result; // EA: added
                     }
                 }
@@ -377,13 +377,13 @@ public class Entrada {
             
             Object input = optionPane.getInputValue();
             if (input == JOptionPane.UNINITIALIZED_VALUE) {
-                commentArray[1] = "Precisa entrar com um valor fracion�rio"; // EA: explanatory text added
+                commentArray[1] = "É necessário digitar um número decimal."; // EA: explanatory text added
                 commentArray[2] = EMPTY_STRING;
             } else {
                 String result = (String) input;
                 if (result == null) { // EA: added for completnes, but is this situation possible?
-                    commentArray[1] = "valor fracion�rio inv�lido:";
-                    commentArray[2] = "Entre com um valor fracion�rio v�lido";
+                    commentArray[1] = "Número decimal inválido:";
+                    commentArray[2] = "Digite um número decimal válido.";
                 } else {
                     // convert String to double
                     try {
@@ -393,8 +393,8 @@ public class Entrada {
                         validResponse = true;
                     } catch (NumberFormatException exception) {
                         // EA: case with uninitialized value is moved up
-                        commentArray[1] = "Valor fracion�rio inv�lido: " + result;
-                        commentArray[2] = "Entre com um valor fracion�rio v�lido";
+                        commentArray[1] = "Número decimal inválido: " + result;
+                        commentArray[2] = "Digite um número decimal válido.";
                         initialValue = result;    // EA: corrected
                     }
                 }
