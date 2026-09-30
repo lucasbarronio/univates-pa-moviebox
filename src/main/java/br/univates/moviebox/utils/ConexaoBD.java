@@ -56,7 +56,7 @@ public class ConexaoBD {
      */
     public Connection getConnection() {
         if (conexao == null) {
-            throw new RuntimeException("conexao==null");
+            throw new RuntimeException("A conexão com o banco de dados não foi estabelecida.");
         }
         return conexao;
     }

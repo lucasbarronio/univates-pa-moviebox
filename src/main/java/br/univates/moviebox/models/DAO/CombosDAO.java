@@ -42,7 +42,7 @@ public class CombosDAO {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Erro ao popular Combo = " + e.toString());
+            System.out.println("Erro ao preencher o combo: " + e.toString());
         }
     }
 
@@ -69,7 +69,7 @@ public class CombosDAO {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Erro ao popular Combo = " + e.toString());
+            System.out.println("Erro ao preencher o combo: " + e.toString());
         }
     }
 

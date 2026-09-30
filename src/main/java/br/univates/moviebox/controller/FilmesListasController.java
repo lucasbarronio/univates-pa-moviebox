@@ -27,8 +27,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
             filmesListasDAO.salvar(filmeLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao salvar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
-            throw new PersistenciaException("Não foi possível salvar a relação filme e lista", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao salvar relação entre filme id=" + filmeLista.getFilme().getId() + " e lista id=" + filmeLista.getLista().getId(), ex);
+            throw new PersistenciaException("Não foi possível salvar a relação entre o filme e a lista", ex);
         }
     }
 
@@ -37,8 +37,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.existe(filmeLista);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao verificar relação filme id=" + filmeLista.getFilme().getId() + ", lista id=" + filmeLista.getLista().getId(), ex);
-            throw new PersistenciaException("Não foi possível verificar a relação filme e lista", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao verificar relação entre filme id=" + filmeLista.getFilme().getId() + " e lista id=" + filmeLista.getLista().getId(), ex);
+            throw new PersistenciaException("Não foi possível verificar a relação entre o filme e a lista", ex);
         }
     }
 
@@ -48,8 +48,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
             filmesListasDAO.excluir(idFilme, idLista);
             return true;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao excluir relação filme id=" + idFilme + ", lista id=" + idLista, ex);
-            throw new PersistenciaException("Não foi possível excluir a relação filme e lista", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao excluir relação entre filme id=" + idFilme + " e lista id=" + idLista, ex);
+            throw new PersistenciaException("Não foi possível excluir a relação entre o filme e a lista", ex);
         }
     }
 
@@ -58,8 +58,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperaPorFilme(idFilme);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas do filme id=" + idFilme, ex);
-            throw new PersistenciaException("Não foi possível recuperar as listas do filme", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar listas relacionadas ao filme id=" + idFilme, ex);
+            throw new PersistenciaException("Não foi possível recuperar as listas relacionadas ao filme", ex);
         }
     }
 
@@ -68,8 +68,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperaPorLista(idLista);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes da lista id=" + idLista, ex);
-            throw new PersistenciaException("Não foi possível recuperar os filmes da lista", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar filmes relacionados à lista id=" + idLista, ex);
+            throw new PersistenciaException("Não foi possível recuperar os filmes relacionados à lista", ex);
         }
     }
 
@@ -78,8 +78,8 @@ public class FilmesListasController implements FILMESLISTASCONTROLLER_I<FilmeLis
         try {
             return filmesListasDAO.recuperarTodos();
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Falha ao recuperar relação de filmes e listas", ex);
-            throw new PersistenciaException("Não foi possível recuperar relação de filmes e listas", ex);
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar as relações entre filmes e listas", ex);
+            throw new PersistenciaException("Não foi possível recuperar as relações entre filmes e listas", ex);
         }
     }
 
