@@ -46,7 +46,8 @@ public class DiretoresDAO implements DAO_I<Diretor> {
     @Override
     public ArrayList<Diretor> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Diretor> diretores = new ArrayList();
-        String sql = "SELECT * FROM diretor WHERE nome LIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM diretor WHERE nome ILIKE '%" + termoBusca
+                + "%' OR nacionalidade ILIKE '%" + termoBusca + "%'";
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {

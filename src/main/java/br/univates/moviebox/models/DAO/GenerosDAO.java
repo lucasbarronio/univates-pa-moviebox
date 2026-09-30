@@ -44,7 +44,7 @@ public class GenerosDAO implements DAO_I<Genero> {
     @Override
     public ArrayList<Genero> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Genero> generos = new ArrayList();
-        String sql = "SELECT * FROM genero WHERE nome LIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM genero WHERE nome ILIKE '%" + termoBusca + "%'";
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {

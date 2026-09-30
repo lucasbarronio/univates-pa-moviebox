@@ -46,7 +46,8 @@ public class ListasDAO implements DAO_I<Lista> {
     @Override
     public ArrayList<Lista> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Lista> listas = new ArrayList();
-        String sql = "SELECT * FROM lista WHERE nome LIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM lista WHERE nome ILIKE '%" + termoBusca
+                + "%' OR descricao ILIKE '%" + termoBusca + "%'";
 
         ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
         while (resultadoConsulta.next()) {

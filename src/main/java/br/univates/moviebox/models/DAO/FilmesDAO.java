@@ -54,7 +54,7 @@ public class FilmesDAO implements DAO_I<Filme> {
     @Override
     public ArrayList<Filme> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Filme> filmes = new ArrayList<>();
-        String sql = sqlFilmesComRelacionamentos() + " WHERE filme.titulo LIKE ?";
+        String sql = sqlFilmesComRelacionamentos() + " WHERE filme.titulo ILIKE ?";
 
         try (PreparedStatement consulta = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
             consulta.setString(1, "%" + termoBusca + "%");
