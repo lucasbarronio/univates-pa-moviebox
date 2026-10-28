@@ -22,6 +22,7 @@ public class CombosDAO {
     // construtor 1
     public void popularCombo(String tabela, JComboBox combo) {
 
+        validarTabela(tabela);
         combo.removeAllItems();
 
         ComboItem item = new ComboItem();
@@ -46,9 +47,19 @@ public class CombosDAO {
         }
     }
 
+    private void validarTabela(String tabela) {
+        if (!java.util.Arrays.asList("diretor", "genero", "filme", "lista", "filme_lista").contains(tabela)) {
+            throw new IllegalArgumentException("Tabela não permitida");
+        }
+    }
+
     // construtor 2
     public void popularCombo(String tabela, String campoCodigo, String campoDescricao, JComboBox combo, String complementoSQL) {
+        if (complementoSQL != null && !complementoSQL.trim().isEmpty()) {
+            throw new IllegalArgumentException("Complemento SQL livre não permitido");
+        }
 
+        validarTabela(tabela);
         combo.removeAllItems();
 
         ComboItem item = new ComboItem();
@@ -57,7 +68,7 @@ public class CombosDAO {
         combo.addItem(item);
 
         try {
-            resultadoConsulta = ConexaoBD.executeQuery("select * from " + tabela + " " + complementoSQL);
+            resultadoConsulta = ConexaoBD.executeQuery("select * from " + tabela);
 
             if (resultadoConsulta.isBeforeFirst()) {
                 while (resultadoConsulta.next()) {

@@ -21,37 +21,50 @@ public class DiretoresDAO implements DAO_I<Diretor> {
         String sql = "INSERT INTO diretor "
                 + "(nome, nacionalidade) "
                 + "VALUES "
-                + "('" + diretor.getNome() + "', "
-                + "'" + diretor.getNacionalidade() + "')";
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+                + "(?, ?)";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, diretor.getNome());
+            ps.setString(2, diretor.getNacionalidade());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void editar(Diretor diretor) throws Exception {
-        String sql = "UPDATE diretor SET nome = '" + diretor.getNome()
-                + "', nacionalidade = '" + diretor.getNacionalidade()
-                + "' WHERE id = " + diretor.getId();
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "UPDATE diretor SET nome = ?, nacionalidade = ? WHERE id = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, diretor.getNome());
+            ps.setString(2, diretor.getNacionalidade());
+            ps.setInt(3, diretor.getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void excluir(int idDiretor) throws Exception {
-        String sql = "DELETE FROM diretor WHERE id = " + idDiretor;
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "DELETE FROM diretor WHERE id = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idDiretor);
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public ArrayList<Diretor> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Diretor> diretores = new ArrayList();
-        String sql = "SELECT * FROM diretor WHERE nome ILIKE '%" + termoBusca
-                + "%' OR nacionalidade ILIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM diretor WHERE nome ILIKE ? OR nacionalidade ILIKE ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            diretores.add(mapearDiretor(resultadoConsulta));
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, "%" + termoBusca + "%");
+            ps.setString(2, "%" + termoBusca + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    diretores.add(mapearDiretor(rs));
+                }
+            }
         }
 
         return diretores;
@@ -60,11 +73,15 @@ public class DiretoresDAO implements DAO_I<Diretor> {
     @Override
     public Diretor recuperaUm(int idDiretor) throws Exception {
         Diretor diretor = null;
-        String sql = "SELECT * FROM diretor WHERE id = " + idDiretor;
+        String sql = "SELECT * FROM diretor WHERE id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        if (resultadoConsulta.next()) {
-            diretor = mapearDiretor(resultadoConsulta);
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idDiretor);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    diretor = mapearDiretor(rs);
+                }
+            }
         }
 
         return diretor;

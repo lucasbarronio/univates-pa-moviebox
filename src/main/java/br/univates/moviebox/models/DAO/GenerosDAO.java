@@ -20,35 +20,47 @@ public class GenerosDAO implements DAO_I<Genero> {
     public void salvar(Genero genero) throws Exception {
         String sql = "INSERT INTO genero "
                 + "(nome) "
-                + "VALUES "
-                + "('" + genero.getNome() + "')";
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+                + "VALUES (?)";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, genero.getNome());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void editar(Genero genero) throws Exception {
-        String sql = "UPDATE genero SET nome = '" + genero.getNome()
-                + "' WHERE id = " + genero.getId();
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "UPDATE genero SET nome = ? WHERE id = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, genero.getNome());
+            ps.setInt(2, genero.getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void excluir(int idGenero) throws Exception {
-        String sql = "DELETE FROM genero WHERE id = " + idGenero;
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "DELETE FROM genero WHERE id = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idGenero);
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public ArrayList<Genero> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Genero> generos = new ArrayList();
-        String sql = "SELECT * FROM genero WHERE nome ILIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM genero WHERE nome ILIKE ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            generos.add(mapearGenero(resultadoConsulta));
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, "%" + termoBusca + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    generos.add(mapearGenero(rs));
+                }
+            }
         }
 
         return generos;
@@ -57,11 +69,15 @@ public class GenerosDAO implements DAO_I<Genero> {
     @Override
     public Genero recuperaUm(int idGenero) throws Exception {
         Genero genero = null;
-        String sql = "SELECT * FROM genero WHERE id = " + idGenero;
+        String sql = "SELECT * FROM genero WHERE id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        if (resultadoConsulta.next()) {
-            genero = mapearGenero(resultadoConsulta);
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idGenero);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    genero = mapearGenero(rs);
+                }
+            }
         }
 
         return genero;

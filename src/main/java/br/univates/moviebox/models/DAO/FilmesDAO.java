@@ -22,26 +22,31 @@ public class FilmesDAO implements DAO_I<Filme> {
     public void salvar(Filme filme) throws Exception {
         String sql = "INSERT INTO filme "
                 + "(titulo, ano_lancamento, sinopse, id_diretor, id_genero) "
-                + "VALUES "
-                + "('" + filme.getTitulo() + "', "
-                + "'" + filme.getAno_lancamento() + "', "
-                + "'" + filme.getSinopse() + "', "
-                + "'" + filme.getDiretor().getId() + "', "
-                + "'" + filme.getGenero().getId() + "')";
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, filme.getTitulo());
+            ps.setInt(2, filme.getAno_lancamento());
+            ps.setString(3, filme.getSinopse());
+            ps.setInt(4, filme.getDiretor().getId());
+            ps.setInt(5, filme.getGenero().getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void editar(Filme filme) throws Exception {
-        String sql = "UPDATE filme SET titulo = '" + filme.getTitulo()
-                + "', ano_lancamento = '" + filme.getAno_lancamento()
-                + "', sinopse = '" + filme.getSinopse()
-                + "', id_diretor = '" + filme.getDiretor().getId()
-                + "', id_genero = '" + filme.getGenero().getId()
-                + "' WHERE id = " + filme.getId();
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "UPDATE filme SET titulo = ?, ano_lancamento = ?, sinopse = ?, id_diretor = ?, id_genero = ? WHERE id = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, filme.getTitulo());
+            ps.setInt(2, filme.getAno_lancamento());
+            ps.setString(3, filme.getSinopse());
+            ps.setInt(4, filme.getDiretor().getId());
+            ps.setInt(5, filme.getGenero().getId());
+            ps.setInt(6, filme.getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override

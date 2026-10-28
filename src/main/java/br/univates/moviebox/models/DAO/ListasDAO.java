@@ -20,20 +20,25 @@ public class ListasDAO implements DAO_I<Lista> {
     public void salvar(Lista lista) throws Exception {
         String sql = "INSERT INTO lista "
                 + "(nome, descricao) "
-                + "VALUES "
-                + "('" + lista.getNome() + "', "
-                + "'" + lista.getDescricao() + "')";
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+                + "VALUES (?, ?)";
+        
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, lista.getNome());
+            ps.setString(2, lista.getDescricao());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void editar(Lista lista) throws Exception {
-        String sql = "UPDATE lista SET nome = '" + lista.getNome()
-                + "', descricao = '" + lista.getDescricao()
-                + "' WHERE id = " + lista.getId();
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "UPDATE lista SET nome = ?, descricao = ? WHERE id = ?";
+        
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, lista.getNome());
+            ps.setString(2, lista.getDescricao());
+            ps.setInt(3, lista.getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override
@@ -62,12 +67,16 @@ public class ListasDAO implements DAO_I<Lista> {
     @Override
     public ArrayList<Lista> recuperarTodos(String termoBusca) throws Exception {
         ArrayList<Lista> listas = new ArrayList();
-        String sql = "SELECT * FROM lista WHERE nome ILIKE '%" + termoBusca
-                + "%' OR descricao ILIKE '%" + termoBusca + "%'";
+        String sql = "SELECT * FROM lista WHERE nome ILIKE ? OR descricao ILIKE ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            listas.add(mapearLista(resultadoConsulta));
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setString(1, "%" + termoBusca + "%");
+            ps.setString(2, "%" + termoBusca + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    listas.add(mapearLista(rs));
+                }
+            }
         }
 
         return listas;
@@ -76,11 +85,15 @@ public class ListasDAO implements DAO_I<Lista> {
     @Override
     public Lista recuperaUm(int idLista) throws Exception {
         Lista lista = null;
-        String sql = "SELECT * FROM lista WHERE id = " + idLista;
+        String sql = "SELECT * FROM lista WHERE id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        if (resultadoConsulta.next()) {
-            lista = mapearLista(resultadoConsulta);
+        try (PreparedStatement consulta = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            consulta.setInt(1, idLista);
+            try (ResultSet resultadoConsulta = consulta.executeQuery()) {
+                if (resultadoConsulta.next()) {
+                    lista = mapearLista(resultadoConsulta);
+                }
+            }
         }
 
         return lista;

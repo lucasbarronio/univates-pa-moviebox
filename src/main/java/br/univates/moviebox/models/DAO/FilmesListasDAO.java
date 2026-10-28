@@ -22,28 +22,37 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
     public void salvar(FilmeLista filmeLista) throws Exception {
         String sql = "INSERT INTO filme_lista "
                 + "(id_filme, id_lista) "
-                + "VALUES "
-                + "('" + filmeLista.getFilme().getId() + "', "
-                + "'" + filmeLista.getLista().getId() + "')";
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+                + "VALUES (?, ?)";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, filmeLista.getFilme().getId());
+            ps.setInt(2, filmeLista.getLista().getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public boolean existe(FilmeLista filmeLista) throws Exception {
-        String sql = "SELECT 1 FROM filme_lista WHERE id_filme = "
-                + filmeLista.getFilme().getId() + " AND id_lista = "
-                + filmeLista.getLista().getId();
-        try (ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql)) {
-            return resultadoConsulta.next();
+        String sql = "SELECT 1 FROM filme_lista WHERE id_filme = ? AND id_lista = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, filmeLista.getFilme().getId());
+            ps.setInt(2, filmeLista.getLista().getId());
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 
     @Override
     public void excluir(int idFilme, int idLista) throws Exception {
-        String sql = "DELETE FROM filme_lista WHERE id_filme = " + idFilme + " AND id_lista = " + idLista;
-        System.out.println(sql);
-        ConexaoBD.executeUpdate(sql);
+        String sql = "DELETE FROM filme_lista WHERE id_filme = ? AND id_lista = ?";
+
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idFilme);
+            ps.setInt(2, idLista);
+            ps.executeUpdate();
+        }
     }
 
     @Override
@@ -62,11 +71,15 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
     @Override
     public ArrayList<FilmeLista> recuperaPorFilme(int idFilme) throws Exception {
         ArrayList<FilmeLista> filmeListas = new ArrayList<>();
-        String sql = sqlRelacionamentos() + " WHERE filme.id = " + idFilme;
+        String sql = sqlRelacionamentos() + " WHERE filme.id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            filmeListas.add(mapearFilmeLista(resultadoConsulta));
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idFilme);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    filmeListas.add(mapearFilmeLista(rs));
+                }
+            }
         }
 
         return filmeListas;
@@ -75,11 +88,15 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
     @Override
     public ArrayList<FilmeLista> recuperaPorLista(int idLista) throws Exception {
         ArrayList<FilmeLista> filmeListas = new ArrayList<>();
-        String sql = sqlRelacionamentos() + " WHERE lista.id = " + idLista;
+        String sql = sqlRelacionamentos() + " WHERE lista.id = ?";
 
-        ResultSet resultadoConsulta = ConexaoBD.executeQuery(sql);
-        while (resultadoConsulta.next()) {
-            filmeListas.add(mapearFilmeLista(resultadoConsulta));
+        try (PreparedStatement ps = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            ps.setInt(1, idLista);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    filmeListas.add(mapearFilmeLista(rs));
+                }
+            }
         }
 
         return filmeListas;
@@ -99,9 +116,9 @@ public class FilmesListasDAO implements FILMESLISTAS_DAO<FilmeLista> {
 
     private String sqlRelacionamentos() {
         return "SELECT filme_lista.id_filme, filme.titulo AS titulo_filme, "
-            + "filme_lista.id_lista, lista.nome AS nome_lista "
-            + "FROM filme_lista "
-            + "JOIN filme ON filme.id = filme_lista.id_filme "
-            + "JOIN lista ON lista.id = filme_lista.id_lista";
+                + "filme_lista.id_lista, lista.nome AS nome_lista "
+                + "FROM filme_lista "
+                + "JOIN filme ON filme.id = filme_lista.id_filme "
+                + "JOIN lista ON lista.id = filme_lista.id_lista";
     }
 }
