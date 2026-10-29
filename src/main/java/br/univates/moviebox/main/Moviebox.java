@@ -5,7 +5,7 @@
 package br.univates.moviebox.main;
 
 import br.univates.moviebox.utils.ConexaoBD;
-import br.univates.moviebox.view.JffMain;
+import br.univates.moviebox.view.TelaLogin;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,7 +17,7 @@ public class Moviebox {
     public static void main(String[] args) {
         try {
             ConexaoBD.getInstance().getConnection();
-            JffMain janela = new JffMain();
+            TelaLogin janela = new TelaLogin();
             janela.setVisible(true);
         } catch (Exception e) {
             System.out.println(e);
