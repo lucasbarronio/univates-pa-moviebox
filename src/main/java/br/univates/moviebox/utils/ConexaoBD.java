@@ -1,5 +1,11 @@
 package br.univates.moviebox.utils;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author fabricio.pretto
@@ -8,10 +14,6 @@ package br.univates.moviebox.utils;
  * @author mateus.roveda
  * 16/05/2023 - criado metodos para consulta e updates; atualizada documentacao.
  */
-import java.sql.*;
-import java.io.*;
-import java.util.*;
-
 public class ConexaoBD {
 
     private static ConexaoBD instancia = null;
@@ -19,23 +21,18 @@ public class ConexaoBD {
 
     public ConexaoBD() {
         try {
-            // Carrega informações do arquivo de propriedades
-            Properties prop = new Properties();
-            File arquivo = new File("db.properties");
-            if (arquivo.isFile()) {
-                prop.load(new FileInputStream(arquivo));
-            }
-            String dbdriver = System.getenv().getOrDefault("DB_DRIVER", prop.getProperty("db.driver"));
-            String dburl = System.getenv().getOrDefault("DB_URL", prop.getProperty("db.url"));
-            String dbuser = System.getenv().getOrDefault("DB_USER", prop.getProperty("db.user"));
-            String dbsenha = System.getenv().getOrDefault("DB_PASSWORD", prop.getProperty("db.senha"));
+            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+            String dbdriver = dotenv.get("DB_DRIVER");
+            String dburl = dotenv.get("DB_URL");
+            String dbuser = dotenv.get("DB_USER");
+            String dbsenha = dotenv.get("DB_PASSWORD");
 
             // Carrega Driver do Banco de Dados
             Class.forName(dbdriver);
 
             conexao = DriverManager.getConnection(dburl, dbuser, dbsenha);
 
-        } catch (IOException | ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e);
         }
     }
