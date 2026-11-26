@@ -10,7 +10,7 @@ Moviebox é uma aplicação desktop em Java para cadastrar filmes, diretores, g�
 - Docker
 - Docker Compose
 
-A porta `5432` deve estar disponível.
+A porta `5432` precisa estar disponível.
 
 ## Executar
 
@@ -21,46 +21,33 @@ git clone https://github.com/lucasbarronio/univates-pa-moviebox.git
 cd univates-pa-moviebox
 ```
 
-Crie o arquivo `.env`:
+Crie o arquivo `.env` a partir do exemplo e revise os valores no `.env`.:
 
 ```bash
 cp .env.example .env
 ```
 
-Configure:
-
-```dotenv
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=univates-pa
-```
-
-Crie o arquivo `db.properties` na raiz do projeto:
-
-```properties
-db.driver=org.postgresql.Driver
-db.url=jdbc:postgresql://localhost:5432/univates-pa
-db.user=postgres
-db.senha=postgres
-```
-
-Inicie o banco de dados:
+Inicie o banco. Na primeira execução, o Docker cria o esquema e carrega os dados iniciais.
 
 ```bash
 docker compose up -d
 ```
 
-Na primeira execução, o banco e os dados iniciais são criados automaticamente.
-
-Execute a aplicação:
+Compile, execute os testes e gere o JAR. O JAR executável fica em `target/moviebox-1.0.jar`:
 
 ```bash
-mvn compile exec:java
+mvn -B verify
+```
+
+Execute o JAR:
+
+```bash
+java -jar ./target/moviebox-1.0.jar
 ```
 
 ## Encerrar
 
-Pare o banco de dados:
+Pare o banco:
 
 ```bash
 docker compose down
