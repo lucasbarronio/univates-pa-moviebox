@@ -21,11 +21,14 @@ public class ConexaoBD {
         try {
             // Carrega informações do arquivo de propriedades
             Properties prop = new Properties();
-            prop.load(new FileInputStream("db.properties"));
-            String dbdriver = prop.getProperty("db.driver");
-            String dburl = prop.getProperty("db.url");
-            String dbuser = prop.getProperty("db.user");
-            String dbsenha = prop.getProperty("db.senha");
+            File arquivo = new File("db.properties");
+            if (arquivo.isFile()) {
+                prop.load(new FileInputStream(arquivo));
+            }
+            String dbdriver = System.getenv().getOrDefault("DB_DRIVER", prop.getProperty("db.driver"));
+            String dburl = System.getenv().getOrDefault("DB_URL", prop.getProperty("db.url"));
+            String dbuser = System.getenv().getOrDefault("DB_USER", prop.getProperty("db.user"));
+            String dbsenha = System.getenv().getOrDefault("DB_PASSWORD", prop.getProperty("db.senha"));
 
             // Carrega Driver do Banco de Dados
             Class.forName(dbdriver);
